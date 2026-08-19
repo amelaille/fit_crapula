@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { profile } from "@/data/program";
 import DashboardClient from "@/components/DashboardClient";
 import { getCurrentUser } from "@/lib/session";
 
@@ -17,14 +16,14 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <header>
+      <header className="text-center">
         {isAmelie ? (
           <>
-            <p className="text-sm font-medium text-accent">{profile.title}</p>
-            <h1 className="mt-1 text-2xl font-semibold text-foreground sm:text-3xl">
-              {profile.goal}
+            <p className="text-sm font-medium text-accent">Étape 1/5</p>
+            <h1 className="mt-1 text-2xl font-semibold text-foreground ">
+              Sèche sur 3 mois
             </h1>
-            <p className="mt-2 text-sm text-muted">Objectif : {profile.target}</p>
+            <p className="mt-2 text-sm text-muted">Objectif : 60-61kg</p>
           </>
         ) : (
           <>
@@ -41,22 +40,6 @@ export default async function DashboardPage() {
 
       <DashboardClient currentUser={currentUser} />
 
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-foreground">Raccourcis</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {visibleShortcuts.map((s) => (
-            <Link
-              key={s.href}
-              href={s.href}
-              className="rounded-2xl border border-border bg-surface p-4 shadow-sm transition-transform hover:-translate-y-0.5"
-            >
-              <span className="text-2xl">{s.emoji}</span>
-              <p className="mt-2 font-semibold text-foreground">{s.label}</p>
-              <p className="mt-0.5 text-xs text-muted">{s.desc}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

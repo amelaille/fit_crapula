@@ -5,12 +5,12 @@ export default function MacroTable({ macros }: { macros: MonthMacros }) {
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-border">
-      <table className="w-full min-w-[420px] border-collapse text-sm">
+      <table className="w-full sm:min-w-[420px] border-collapse text-xs sm:text-sm">
         <thead>
           <tr className="bg-nude text-nude-foreground">
-            <th className="px-4 py-2.5 text-left font-medium">—</th>
-            <th className="px-4 py-2.5 text-left font-medium">Jours d&apos;entraînement</th>
-            <th className="px-4 py-2.5 text-left font-medium">Jours de repos</th>
+            <th className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-left font-medium">—</th>
+            <th className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-left font-medium">Jours d&apos;entraînement</th>
+            <th className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-left font-medium">Jours de repos</th>
           </tr>
         </thead>
         <tbody>
@@ -50,13 +50,13 @@ function Row({
 }) {
   return (
     <tr className="border-t border-border">
-      <td className={`px-4 py-2.5 ${strong ? "font-semibold text-foreground" : "text-muted"}`}>
+      <td className={`px-2.5 py-2 sm:px-4 sm:py-2.5 ${strong ? "font-semibold text-foreground" : "text-muted"}`}>
         {label}
       </td>
-      <td className={`px-4 py-2.5 ${strong ? "font-semibold text-accent" : "text-foreground/85"}`}>
+      <td className={`px-2.5 py-2 sm:px-4 sm:py-2.5 ${strong ? "font-semibold text-accent" : "text-foreground/85"}`}>
         {a}
       </td>
-      <td className={`px-4 py-2.5 ${strong ? "font-semibold text-accent" : "text-foreground/85"}`}>
+      <td className={`px-2.5 py-2 sm:px-4 sm:py-2.5 ${strong ? "font-semibold text-accent" : "text-foreground/85"}`}>
         {b}
       </td>
     </tr>

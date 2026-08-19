@@ -24,20 +24,20 @@ export default async function SuiviPage() {
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-semibold text-foreground">Ce que tu mesures</h2>
         <div className="overflow-x-auto rounded-2xl border border-border">
-          <table className="w-full min-w-[520px] border-collapse text-sm">
+          <table className="w-full sm:min-w-[520px] border-collapse text-xs sm:text-sm">
             <thead>
               <tr className="bg-nude text-nude-foreground">
-                <th className="px-4 py-2.5 text-left font-medium">Quoi</th>
-                <th className="px-4 py-2.5 text-left font-medium">Quand</th>
-                <th className="px-4 py-2.5 text-left font-medium">Comment</th>
+                <th className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-left font-medium">Quoi</th>
+                <th className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-left font-medium">Quand</th>
+                <th className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-left font-medium">Comment</th>
               </tr>
             </thead>
             <tbody>
               {trackingMeasurements.map((m) => (
                 <tr key={m.what} className="border-t border-border">
-                  <td className="px-4 py-2.5 font-medium text-foreground">{m.what}</td>
-                  <td className="px-4 py-2.5 text-foreground/85">{m.when}</td>
-                  <td className="px-4 py-2.5 text-foreground/85">{m.how}</td>
+                  <td className="px-2.5 py-2 sm:px-4 sm:py-2.5 font-medium text-foreground">{m.what}</td>
+                  <td className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-foreground/85">{m.when}</td>
+                  <td className="px-2.5 py-2 sm:px-4 sm:py-2.5 text-foreground/85">{m.how}</td>
                 </tr>
               ))}
             </tbody>

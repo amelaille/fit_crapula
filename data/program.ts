@@ -2,13 +2,6 @@
 // Recopié fidèlement du programme source (sections 1, 3.1-3.3, 3.8-3.9, 5, 6).
 import type { Phase } from "@/lib/types";
 
-export const profile = {
-  title: "Femme, 23 ans, 66 kg",
-  goal:
-    "Fessiers développés, jambes toniques et fines, haut du corps tonique sans volume, ventre plat",
-  target: "~60-61 kg à la fin des 3 mois — objectif long terme : 56-59 kg, sans effet yoyo",
-};
-
 // ---------- 1. Comprendre ton corps de rêve ----------
 
 export const pillars = [
@@ -38,13 +31,13 @@ export const geneticsNote =
 // ---------- 3.1 Structure hebdomadaire ----------
 
 export const weeklyStructureTable = [
-  { day: "Lundi", session: "Bas du corps A — Fessiers/Ischios (lourd)", duration: "60 min" },
-  { day: "Mardi", session: "Haut du corps + Core (volume réduit)", duration: "45 min" },
-  { day: "Mercredi", session: "Cardio — course 30-40 min + mobilité", duration: "45 min" },
-  { day: "Jeudi", session: "Bas du corps B — Fessiers/Quadriceps", duration: "60 min" },
-  { day: "Vendredi", session: "Repos actif — marche 45 min", duration: "—" },
-  { day: "Samedi", session: "Bas du corps C — Fessiers volume + unilatéral", duration: "55 min" },
-  { day: "Dimanche", session: "Repos complet", duration: "—" },
+  { day: "Lundi", session: "Fessiers/Ischios (lourd)", intensity: "RIR 1-2 + RIR 0-1" },
+  { day: "Mardi", session: "Haut du corps + Core", intensity: "RIR 3" },
+  { day: "Mercredi", session: "Cardio", intensity: "—" },
+  { day: "Jeudi", session: "Fessiers/Quadriceps", intensity: "RIR 2" },
+  { day: "Vendredi", session: "Repos actif : Marche 60 min", intensity: "—" },
+  { day: "Samedi", session: "Fessiers volume + unilatéral", intensity  : "RIR 0-1" },
+  { day: "Dimanche", session: "Repos complet", intensity: "—" },
 ];
 
 // ---------- 3.2 La marche ----------
@@ -84,14 +77,14 @@ export const walking = {
 // ---------- 3.3 Le système RIR ----------
 
 export const rirDefinition =
-  "RIR = Répétitions En Réserve : le nombre de répétitions que tu aurais encore pu faire à la fin de ta série.";
+  "RIR = Répétitions En Réserve";
 
 export const rirScale = [
   { level: "RIR 4+", feeling: "Facile, tu pourrais discuter", meaning: "Trop léger, aucun stimulus" },
   { level: "RIR 3", feeling: "Ça travaille mais c'est confortable", meaning: "Zone d'échauffement / d'apprentissage" },
   { level: "RIR 2", feeling: "Les 2 dernières reps ralentissent", meaning: "Zone de travail standard", highlight: true },
-  { level: "RIR 1", feeling: "La dernière rep est très dure, la vitesse chute", meaning: "Zone lourde", highlight: true },
-  { level: "RIR 0", feeling: "Échec technique — tu ne peux plus en faire une", meaning: "Isolation uniquement" },
+  { level: "RIR 1", feeling: "La dernière rep est très dure", meaning: "Zone lourde", highlight: true },
+  { level: "RIR 0", feeling: "Échec technique", meaning: "Isolation uniquement" },
 ];
 
 export const rirHowToJudge =
@@ -175,10 +168,9 @@ export const chooseLoadsNote =
 
 export const doubleProgression = {
   steps: [
-    "Tu commences à 8 reps sur toutes les séries à RIR 2",
-    "Séance après séance, tu ajoutes 1 rep : 8 → 9 → 10",
-    "Quand tu atteins 10 reps sur toutes les séries à RIR 2 → +2,5 kg (ou +5 kg sur presse/hip thrust)",
-    "Tu redescends à 8 reps avec la nouvelle charge, et tu recommences",
+    "Départ à 8 reps sur toutes les séries",
+    "Quand 10 reps atteintes sur toutes les séries → +2,5 kg",
+    "Descente à 8 reps avec la nouvelle charge",
   ],
   expectedResults:
     "Sur 12 semaines, attends-toi à progresser d'environ +20 à +30% sur le hip thrust et +15% sur le squat. C'est ça, le vrai indicateur que le programme fonctionne — plus que la balance.",
