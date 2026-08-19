@@ -52,7 +52,7 @@ export default async function NutritionPage() {
       {/* Macros par mois */}
       <section className="flex flex-col gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Calories & macros cyclées</h2>
+          <h2 className="text-lg font-semibold text-foreground">Calories et macros cyclées</h2>
           <p className="mt-1 text-sm text-muted">Moyenne hebdomadaire : {weeklyAverageKcal}</p>
         </div>
         <div className="flex flex-col gap-4">
