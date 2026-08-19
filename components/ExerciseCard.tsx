@@ -4,9 +4,10 @@ import EditableLoad from "./EditableLoad";
 type ExerciseCardProps = {
   exercise: Exercise;
   weekId: number;
+  fallback?: boolean;
 };
 
-export default function ExerciseCard({ exercise, weekId }: ExerciseCardProps) {
+export default function ExerciseCard({ exercise, weekId, fallback }: ExerciseCardProps) {
   return (
     <div className="rounded-2xl border border-border bg-background/60 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -34,7 +35,7 @@ export default function ExerciseCard({ exercise, weekId }: ExerciseCardProps) {
       )}
 
       <div className="mt-3.5 border-t border-border pt-3.5">
-        <EditableLoad exerciseId={exercise.id} weekId={weekId} />
+        <EditableLoad exerciseId={exercise.id} weekId={weekId} fallback={fallback} />
       </div>
     </div>
   );

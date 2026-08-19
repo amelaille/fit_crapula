@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getLoad, setLoad } from "@/lib/storage";
+import { getLoad, getLoadWithFallback, setLoad } from "@/lib/storage";
 
 type EditableLoadProps = {
   exerciseId: string;
   weekId: number;
+  /** Si vrai, pré-remplit avec la dernière valeur connue (semaine courante ou antérieure) au lieu de la seule semaine courante. */
+  fallback?: boolean;
 };
 
-/** Champs éditables (charge, reps réelles, fait) pour un exercice, persistés par semaine dans localStorage. */
-export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) {
+/** Champs éditables (charge, reps réelles, fait) pour un exercice, persistés par semaine dans Supabase. */
+export default function EditableLoad({ exerciseId, weekId, fallback }: EditableLoadProps) {
   const [weight, setWeight] = useState("");
   const [reps, setReps] = useState("");
   const [done, setDone] = useState(false);
@@ -18,16 +20,18 @@ export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) 
 
   useEffect(() => {
     let cancelled = false;
-    getLoad(exerciseId, weekId).then((existing) => {
+    const fetchLoad = fallback ? getLoadWithFallback(exerciseId, weekId) : getLoad(exerciseId, weekId);
+    fetchLoad.then((existing) => {
       if (cancelled) return;
       setWeight(existing?.weight != null ? String(existing.weight) : "");
       setReps(existing?.reps ?? "");
-      setDone(existing?.done ?? false);
+      // "Fait" ne doit pas être hérité d'une semaine passée récupérée en fallback.
+      setDone(existing?.weekId === weekId ? existing.done : false);
     });
     return () => {
       cancelled = true;
     };
-  }, [exerciseId, weekId]);
+  }, [exerciseId, weekId, fallback]);
 
   function flashSaved() {
     setSaved(true);

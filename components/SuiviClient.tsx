@@ -1,22 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import {
-  getWeights,
-  addWeight,
-  getComments,
-  setComment,
-  getActiveWeek,
-} from "@/lib/storage";
+import { getWeights, addWeight, getComments, setComment } from "@/lib/storage";
+import { getCurrentWeekId } from "@/lib/dates";
 import type { AppUser, WeightEntry, WeekComment } from "@/lib/types";
 import { APP_USER_LABELS } from "@/lib/types";
 import WeightChart from "./WeightChart";
 import WeekSelector from "./WeekSelector";
+import TrainingCalendar from "./TrainingCalendar";
 
 export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
   const [weights, setWeights] = useState<WeightEntry[]>([]);
   const [comments, setComments] = useState<WeekComment[]>([]);
-  const [selectedWeek, setSelectedWeek] = useState(1);
+  const [selectedWeek, setSelectedWeek] = useState(() => getCurrentWeekId());
 
   const [weightInput, setWeightInput] = useState("");
   const [commentInput, setCommentInput] = useState("");
@@ -32,7 +28,6 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
 
   useEffect(() => {
     refreshAll();
-    getActiveWeek().then(setSelectedWeek);
   }, []);
 
   useEffect(() => {
@@ -166,6 +161,12 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
         )}
       </section>
 
+      {currentUser === "amelie" && (
+        <section className="flex flex-col gap-4">
+          <h2 className="text-lg font-semibold text-foreground">Calendrier d&apos;entraînement</h2>
+          <TrainingCalendar />
+        </section>
+      )}
 
       {flash && (
         <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background shadow-lg sm:bottom-6">

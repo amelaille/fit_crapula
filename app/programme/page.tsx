@@ -13,6 +13,7 @@ import {
   cardio,
 } from "@/data/program";
 import InfoCallout from "@/components/InfoCallout";
+import TodaySession from "@/components/TodaySession";
 
 export default async function ProgrammePage() {
   const currentUser = await getCurrentUser();
@@ -22,9 +23,7 @@ export default async function ProgrammePage() {
     <div className="flex flex-col gap-10">
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-semibold text-foreground">Séance du jour</h2>
-        <div className="flex flex-col gap-4">
-          Mettre ici la seance du jour
-        </div>
+        <TodaySession />
       </section>
 
       {/* Structure hebdomadaire */}

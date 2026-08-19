@@ -129,3 +129,10 @@ export type WeekComment = {
   text: string;
   updatedAt: string;
 };
+
+export type DailyLog = {
+  user: AppUser;
+  date: string; // "YYYY-MM-DD"
+  trained: boolean;
+  cheatMeal: boolean;
+};

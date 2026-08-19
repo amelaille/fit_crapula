@@ -4,9 +4,10 @@ import ExerciseCard from "./ExerciseCard";
 type WorkoutSectionProps = {
   session: WorkoutSession;
   weekId: number;
+  fallback?: boolean;
 };
 
-export default function WorkoutSection({ session, weekId }: WorkoutSectionProps) {
+export default function WorkoutSection({ session, weekId, fallback }: WorkoutSectionProps) {
   return (
     <section
       id={`session-${session.id}`}
@@ -44,7 +45,7 @@ export default function WorkoutSection({ session, weekId }: WorkoutSectionProps)
 
       <div className="mt-4 flex flex-col gap-3">
         {session.exercises.map((exercise) => (
-          <ExerciseCard key={exercise.id} exercise={exercise} weekId={weekId} />
+          <ExerciseCard key={exercise.id} exercise={exercise} weekId={weekId} fallback={fallback} />
         ))}
       </div>
 

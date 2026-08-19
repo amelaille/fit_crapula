@@ -1,4 +1,4 @@
-import type { AppUser, ExerciseLoad, WeightEntry, WeekComment } from "./types";
+import type { AppUser, ExerciseLoad, WeightEntry, WeekComment, DailyLog } from "./types";
 import { supabase } from "./supabase/client";
 
 // Toutes les fonctions parlent à Supabase (Postgres). Elles sont async et
@@ -32,6 +32,26 @@ export async function getLoad(
     .select("exercise_id, week_id, weight, reps, done")
     .eq("exercise_id", exerciseId)
     .eq("week_id", weekId)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? rowToLoad(data) : undefined;
+}
+
+/**
+ * Dernière charge connue à date pour cet exercice : la semaine courante si elle a déjà
+ * une valeur, sinon la plus récente semaine antérieure avec une valeur enregistrée.
+ */
+export async function getLoadWithFallback(
+  exerciseId: string,
+  weekId: number
+): Promise<ExerciseLoad | undefined> {
+  const { data, error } = await supabase
+    .from("exercise_loads")
+    .select("exercise_id, week_id, weight, reps, done")
+    .eq("exercise_id", exerciseId)
+    .lte("week_id", weekId)
+    .order("week_id", { ascending: false })
+    .limit(1)
     .maybeSingle();
   if (error) throw error;
   return data ? rowToLoad(data) : undefined;
@@ -154,21 +174,56 @@ export async function setComment(
   if (error) throw error;
 }
 
-// ---------- Semaine active ----------
+// ---------- Journal quotidien (séance faite / cheat meal) ----------
 
-export async function getActiveWeek(): Promise<number> {
+export async function getDailyLog(
+  user: AppUser,
+  date: string
+): Promise<DailyLog | undefined> {
   const { data, error } = await supabase
-    .from("app_state")
-    .select("active_week")
-    .eq("id", 1)
+    .from("daily_log")
+    .select("app_user, log_date, trained, cheat_meal")
+    .eq("app_user", user)
+    .eq("log_date", date)
     .maybeSingle();
   if (error) throw error;
-  return data?.active_week ?? 1;
+  return data ? rowToDailyLog(data) : undefined;
 }
 
-export async function setActiveWeek(weekId: number): Promise<void> {
-  const { error } = await supabase
-    .from("app_state")
-    .upsert({ id: 1, active_week: weekId });
+export async function getDailyLogs(user: AppUser): Promise<DailyLog[]> {
+  const { data, error } = await supabase
+    .from("daily_log")
+    .select("app_user, log_date, trained, cheat_meal")
+    .eq("app_user", user);
   if (error) throw error;
+  return (data ?? []).map(rowToDailyLog);
+}
+
+export async function setDailyLog(
+  user: AppUser,
+  date: string,
+  patch: { trained?: boolean; cheatMeal?: boolean }
+): Promise<void> {
+  const existing = await getDailyLog(user, date);
+  const { error } = await supabase.from("daily_log").upsert({
+    app_user: user,
+    log_date: date,
+    trained: patch.trained ?? existing?.trained ?? false,
+    cheat_meal: patch.cheatMeal ?? existing?.cheatMeal ?? false,
+  });
+  if (error) throw error;
+}
+
+function rowToDailyLog(row: {
+  app_user: AppUser;
+  log_date: string;
+  trained: boolean;
+  cheat_meal: boolean;
+}): DailyLog {
+  return {
+    user: row.app_user,
+    date: row.log_date,
+    trained: row.trained,
+    cheatMeal: row.cheat_meal,
+  };
 }

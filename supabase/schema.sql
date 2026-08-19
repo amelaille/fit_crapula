@@ -22,6 +22,7 @@ drop table if exists weight_entries cascade;
 drop table if exists week_comments cascade;
 drop table if exists exercise_loads cascade;
 drop table if exists app_state cascade;
+drop table if exists daily_log cascade;
 
 -- ---------- Charges par exercice / semaine (programme d'Amélie, partagé) ----------
 create table exercise_loads (
@@ -52,21 +53,22 @@ create table week_comments (
   primary key (app_user, week_id)
 );
 
--- ---------- Semaine active (une seule ligne, partagée) ----------
-create table app_state (
-  id integer primary key default 1,
-  active_week integer not null default 1,
-  constraint app_state_singleton check (id = 1)
+-- ---------- Journal quotidien : séance faite / cheat meal, un journal par personne ----------
+create table daily_log (
+  app_user text not null check (app_user in ('amelie', 'sena')),
+  log_date date not null,
+  trained boolean not null default false,
+  cheat_meal boolean not null default false,
+  primary key (app_user, log_date)
 );
-insert into app_state (id, active_week) values (1, 1);
 
 -- ---------- RLS : réservé aux comptes connectés (voir note en haut du fichier) ----------
 alter table exercise_loads enable row level security;
 alter table weight_entries enable row level security;
 alter table week_comments enable row level security;
-alter table app_state enable row level security;
+alter table daily_log enable row level security;
 
 create policy "authenticated full access" on exercise_loads for all to authenticated using (true) with check (true);
 create policy "authenticated full access" on weight_entries for all to authenticated using (true) with check (true);
 create policy "authenticated full access" on week_comments for all to authenticated using (true) with check (true);
-create policy "authenticated full access" on app_state for all to authenticated using (true) with check (true);
+create policy "authenticated full access" on daily_log for all to authenticated using (true) with check (true);
