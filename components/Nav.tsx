@@ -66,7 +66,7 @@ export default function Nav({ user }: { user: AppUser }) {
       </header>
 
       {/* Barre du haut — mobile */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-black/20 bg-background/95 px-4 py-1 backdrop-blur sm:hidden">
+      <header className="sticky top-0 z-30 flex items-center justify-between bg-background/95 px-4 py-1 backdrop-blur sm:hidden">
         <span className="text-xs font-medium uppercase text-muted">
           {APP_USER_LABELS[user]}
         </span>
@@ -92,25 +92,19 @@ export default function Nav({ user }: { user: AppUser }) {
       </header>
 
       {/* Barre du bas — mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur sm:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 bg-background/95 backdrop-blur sm:hidden px-6 py-2">
         <div className="mx-auto flex max-w-md items-stretch justify-between px-2 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1.5">
-          {visibleLinks.map(({ href, label, icon: Icon }) => {
+          {visibleLinks.map(({ href, icon: Icon }) => {
             const active = isActive(pathname, href);
             return (
               <Link
                 key={href}
                 href={href}
-                className="flex flex-1 flex-col items-center gap-0.5 rounded-xl px-2 py-1.5"
+                className="rounded-xl text-nude-foreground transition-colors hover:bg-white/10 hover:text-nude-foreground"
               >
                 <Icon
-                  className={`h-5 w-5 ${active ? "text-accent" : "text-muted"}`}
+                  className={`h-7 w-7 ${active ? "text-accent" : "text-muted"}`}
                 />
-                <span
-                  className={`text-[0.68rem] font-medium ${active ? "text-accent" : "text-muted"
-                    }`}
-                >
-                  {label}
-                </span>
               </Link>
             );
           })}
