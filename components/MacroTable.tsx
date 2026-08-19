@@ -4,7 +4,7 @@ export default function MacroTable({ macros }: { macros: MonthMacros }) {
   const hasDetail = macros.fatTraining !== undefined;
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-border">
+    <div className="overflow-x-auto rounded-2xl border border-border bg-surface">
       <table className="w-full sm:min-w-[420px] border-collapse text-xs sm:text-sm">
         <thead>
           <tr className="bg-nude text-nude-foreground">

@@ -23,7 +23,7 @@ export default async function SuiviPage() {
 
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-semibold text-foreground">Ce que tu mesures</h2>
-        <div className="overflow-x-auto rounded-2xl border border-border">
+        <div className="overflow-x-auto rounded-2xl border border-border bg-surface">
           <table className="w-full sm:min-w-[520px] border-collapse text-xs sm:text-sm">
             <thead>
               <tr className="bg-nude text-nude-foreground">
