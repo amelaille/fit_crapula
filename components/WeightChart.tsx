@@ -10,31 +10,43 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import type { WeightEntry } from "@/lib/types";
+import type { AppUser, WeightEntry } from "@/lib/types";
+import { APP_USERS, APP_USER_LABELS } from "@/lib/types";
 
 const START_WEIGHT = 72;
 const TARGET_WEIGHT = 65.5;
 
 type ChartPoint = {
   week: number;
-  actual: number | null;
   target: number;
-};
+} & Record<AppUser, number | null>;
 
 function buildData(entries: WeightEntry[]): ChartPoint[] {
-  const byWeek = new Map(entries.map((e) => [e.weekId, e.weight]));
+  const byUserWeek = new Map<AppUser, Map<number, number>>();
+  for (const user of APP_USERS) byUserWeek.set(user, new Map());
+  for (const entry of entries) {
+    byUserWeek.get(entry.user)?.set(entry.weekId, entry.weight);
+  }
+
   const points: ChartPoint[] = [];
   for (let week = 0; week <= 12; week++) {
-    const target =
-      START_WEIGHT - ((START_WEIGHT - TARGET_WEIGHT) / 12) * week;
-    const actual = week === 0 ? START_WEIGHT : byWeek.get(week) ?? null;
-    points.push({ week, actual: actual ?? null, target: Math.round(target * 10) / 10 });
+    const target = START_WEIGHT - ((START_WEIGHT - TARGET_WEIGHT) / 12) * week;
+    const point = {
+      week,
+      target: Math.round(target * 10) / 10,
+    } as ChartPoint;
+    for (const user of APP_USERS) {
+      point[user] = byUserWeek.get(user)?.get(week) ?? null;
+    }
+    points.push(point);
   }
   return points;
 }
 
 export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
   const data = buildData(entries);
+  const usersPresent = APP_USERS.filter((user) => entries.some((e) => e.user === user));
+  const usersToShow = usersPresent.length > 0 ? usersPresent : APP_USERS;
 
   return (
     <div className="h-72 w-full sm:h-80">
@@ -66,11 +78,13 @@ export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
             labelFormatter={(week) => (week === 0 ? "Départ" : `Semaine ${week}`)}
             formatter={(value, name) => [
               `${value} kg`,
-              name === "actual" ? "Ton poids" : "Objectif",
+              name === "target" ? "Objectif" : APP_USER_LABELS[name as AppUser],
             ]}
           />
           <Legend
-            formatter={(value) => (value === "actual" ? "Ton poids" : "Objectif")}
+            formatter={(value) =>
+              value === "target" ? "Objectif" : APP_USER_LABELS[value as AppUser]
+            }
             wrapperStyle={{ fontSize: 13, color: "var(--muted)" }}
           />
           <Line
@@ -82,16 +96,19 @@ export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
             dot={false}
             isAnimationActive={false}
           />
-          <Line
-            type="monotone"
-            dataKey="actual"
-            stroke="var(--chart-actual)"
-            strokeWidth={2.5}
-            dot={{ r: 4, fill: "var(--chart-actual)", strokeWidth: 0 }}
-            activeDot={{ r: 6 }}
-            connectNulls
-            isAnimationActive={false}
-          />
+          {usersToShow.map((user) => (
+            <Line
+              key={user}
+              type="monotone"
+              dataKey={user}
+              stroke={`var(--user-${user})`}
+              strokeWidth={2.5}
+              dot={{ r: 4, fill: `var(--user-${user})`, strokeWidth: 0 }}
+              activeDot={{ r: 6 }}
+              connectNulls
+              isAnimationActive={false}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

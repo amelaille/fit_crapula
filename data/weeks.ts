@@ -5,7 +5,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 1,
     phaseId: 1,
-    caloriesTraining: 1700,
+    caloriesTraining: 1650,
     caloriesRest: 1400,
     focus: "Technique et régularité, pas les charges.",
     notes: [
@@ -19,7 +19,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 2,
     phaseId: 1,
-    caloriesTraining: 1700,
+    caloriesTraining: 1650,
     caloriesRest: 1400,
     focus: "Technique et régularité, pas les charges.",
     notes: [
@@ -33,7 +33,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 3,
     phaseId: 1,
-    caloriesTraining: 1700,
+    caloriesTraining: 1650,
     caloriesRest: 1400,
     focus: "Technique et régularité, pas les charges.",
     notes: ["Pèse tous tes aliments."],
@@ -44,7 +44,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 4,
     phaseId: 1,
-    caloriesTraining: 1700,
+    caloriesTraining: 1650,
     caloriesRest: 1400,
     focus: "Technique et régularité, pas les charges.",
     notes: ["Première série de photos et mensurations."],
@@ -55,7 +55,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 5,
     phaseId: 2,
-    caloriesTraining: 1650,
+    caloriesTraining: 1600,
     caloriesRest: 1350,
     focus: "Intensification — le corps est plus léger, on ajoute du volume.",
     notes: [],
@@ -70,7 +70,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 6,
     phaseId: 2,
-    caloriesTraining: 1650,
+    caloriesTraining: 1600,
     caloriesRest: 1350,
     focus: "Intensification — le corps est plus léger, on ajoute du volume.",
     notes: ["C'est ici que tes fesses vont visiblement changer de forme. Le poids sur la balance ralentira — c'est normal, tu construis du muscle en perdant du gras."],
@@ -85,7 +85,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 7,
     phaseId: 2,
-    caloriesTraining: 1650,
+    caloriesTraining: 1600,
     caloriesRest: 1350,
     focus: "Intensification — le corps est plus léger, on ajoute du volume.",
     notes: [],
@@ -100,7 +100,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 8,
     phaseId: 2,
-    caloriesTraining: 1650,
+    caloriesTraining: 1600,
     caloriesRest: 1350,
     focus: "Semaine de décharge.",
     notes: [
@@ -115,7 +115,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 9,
     phaseId: 3,
-    caloriesTraining: 1600,
+    caloriesTraining: 1550,
     caloriesRest: 1300,
     focus: "Définition.",
     notes: [],
@@ -131,7 +131,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 10,
     phaseId: 3,
-    caloriesTraining: 1600,
+    caloriesTraining: 1550,
     caloriesRest: 1300,
     focus: "Définition.",
     notes: [],
@@ -147,7 +147,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 11,
     phaseId: 3,
-    caloriesTraining: 1600,
+    caloriesTraining: 1550,
     caloriesRest: 1300,
     focus: "Définition.",
     notes: [],
@@ -163,7 +163,7 @@ export const weeks: WeekPlan[] = [
   {
     id: 12,
     phaseId: 3,
-    caloriesTraining: 1600,
+    caloriesTraining: 1550,
     caloriesRest: 1300,
     focus: "Bilan complet.",
     notes: ["Photos, mensurations, bilan complet."],

@@ -1,155 +1,201 @@
-import type {
-  ExerciseLoad,
-  WeightEntry,
-  WeekComment,
-  Measurement,
-  ExportedData,
-} from "./types";
+import type { AppUser, ExerciseLoad, WeightEntry, WeekComment, ExportedData } from "./types";
+import { supabase } from "./supabase/client";
 
-// Toutes les fonctions sont SSR-safe : si `window` n'existe pas (rendu serveur),
-// elles renvoient un fallback sans jamais planter.
-
-const KEYS = {
-  loads: "fitapp:loads",
-  weights: "fitapp:weights",
-  comments: "fitapp:comments",
-  measurements: "fitapp:measurements",
-  activeWeek: "fitapp:activeWeek",
-} as const;
-
-function isClient() {
-  return typeof window !== "undefined";
-}
-
-function readJSON<T>(key: string, fallback: T): T {
-  if (!isClient()) return fallback;
-  try {
-    const raw = window.localStorage.getItem(key);
-    if (!raw) return fallback;
-    return JSON.parse(raw) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-function writeJSON<T>(key: string, value: T) {
-  if (!isClient()) return;
-  window.localStorage.setItem(key, JSON.stringify(value));
-}
+// Toutes les fonctions parlent à Supabase (Postgres). Elles sont async et
+// pensées pour être appelées depuis des Client Components ("use client").
 
 // ---------- Charges (ExerciseLoad) ----------
 
-export function getLoads(): ExerciseLoad[] {
-  return readJSON<ExerciseLoad[]>(KEYS.loads, []);
+export async function getLoads(): Promise<ExerciseLoad[]> {
+  const { data, error } = await supabase
+    .from("exercise_loads")
+    .select("exercise_id, week_id, weight, reps, done");
+  if (error) throw error;
+  return (data ?? []).map(rowToLoad);
 }
 
-export function getLoadsForWeek(weekId: number): ExerciseLoad[] {
-  return getLoads().filter((l) => l.weekId === weekId);
+export async function getLoadsForWeek(weekId: number): Promise<ExerciseLoad[]> {
+  const { data, error } = await supabase
+    .from("exercise_loads")
+    .select("exercise_id, week_id, weight, reps, done")
+    .eq("week_id", weekId);
+  if (error) throw error;
+  return (data ?? []).map(rowToLoad);
 }
 
-export function getLoad(
+export async function getLoad(
   exerciseId: string,
   weekId: number
-): ExerciseLoad | undefined {
-  return getLoads().find(
-    (l) => l.exerciseId === exerciseId && l.weekId === weekId
-  );
+): Promise<ExerciseLoad | undefined> {
+  const { data, error } = await supabase
+    .from("exercise_loads")
+    .select("exercise_id, week_id, weight, reps, done")
+    .eq("exercise_id", exerciseId)
+    .eq("week_id", weekId)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? rowToLoad(data) : undefined;
 }
 
-export function setLoad(load: ExerciseLoad) {
-  const loads = getLoads();
-  const idx = loads.findIndex(
-    (l) => l.exerciseId === load.exerciseId && l.weekId === load.weekId
-  );
-  if (idx >= 0) loads[idx] = load;
-  else loads.push(load);
-  writeJSON(KEYS.loads, loads);
+export async function setLoad(load: ExerciseLoad): Promise<void> {
+  const { error } = await supabase.from("exercise_loads").upsert({
+    exercise_id: load.exerciseId,
+    week_id: load.weekId,
+    weight: load.weight,
+    reps: load.reps,
+    done: load.done,
+  });
+  if (error) throw error;
 }
 
 /** Copie toutes les charges de `fromWeekId` vers `toWeekId` (écrase les existantes). */
-export function copyLoadsFromWeek(fromWeekId: number, toWeekId: number) {
-  const loads = getLoads();
-  const source = loads.filter((l) => l.weekId === fromWeekId);
-  const withoutTarget = loads.filter((l) => l.weekId !== toWeekId);
+export async function copyLoadsFromWeek(
+  fromWeekId: number,
+  toWeekId: number
+): Promise<void> {
+  const source = await getLoadsForWeek(fromWeekId);
+  if (source.length === 0) return;
   const copied = source.map((l) => ({
-    ...l,
-    weekId: toWeekId,
+    exercise_id: l.exerciseId,
+    week_id: toWeekId,
+    weight: l.weight,
+    reps: l.reps,
     done: false,
   }));
-  writeJSON(KEYS.loads, [...withoutTarget, ...copied]);
+  const { error } = await supabase.from("exercise_loads").upsert(copied);
+  if (error) throw error;
+}
+
+function rowToLoad(row: {
+  exercise_id: string;
+  week_id: number;
+  weight: number | null;
+  reps: string | null;
+  done: boolean;
+}): ExerciseLoad {
+  return {
+    exerciseId: row.exercise_id,
+    weekId: row.week_id,
+    weight: row.weight,
+    reps: row.reps,
+    done: row.done,
+  };
 }
 
 // ---------- Poids (WeightEntry) ----------
+// Renvoie les entrées de tout le monde : tout le monde voit les stats de tout le monde.
 
-export function getWeights(): WeightEntry[] {
-  return readJSON<WeightEntry[]>(KEYS.weights, []).sort(
-    (a, b) => a.weekId - b.weekId
-  );
+export async function getWeights(): Promise<WeightEntry[]> {
+  const { data, error } = await supabase
+    .from("weight_entries")
+    .select("app_user, week_id, weight, entry_date")
+    .order("week_id", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    user: row.app_user,
+    weekId: row.week_id,
+    weight: row.weight,
+    date: row.entry_date,
+  }));
 }
 
-export function addWeight(entry: WeightEntry) {
-  const weights = getWeights().filter((w) => w.weekId !== entry.weekId);
-  writeJSON(KEYS.weights, [...weights, entry]);
+export async function addWeight(entry: WeightEntry): Promise<void> {
+  const { error } = await supabase.from("weight_entries").upsert({
+    app_user: entry.user,
+    week_id: entry.weekId,
+    weight: entry.weight,
+    entry_date: entry.date,
+  });
+  if (error) throw error;
 }
 
 // ---------- Commentaires hebdomadaires ----------
 
-export function getComments(): WeekComment[] {
-  return readJSON<WeekComment[]>(KEYS.comments, []);
+export async function getComments(): Promise<WeekComment[]> {
+  const { data, error } = await supabase
+    .from("week_comments")
+    .select("app_user, week_id, text, updated_at");
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    user: row.app_user,
+    weekId: row.week_id,
+    text: row.text,
+    updatedAt: row.updated_at,
+  }));
 }
 
-export function getComment(weekId: number): WeekComment | undefined {
-  return getComments().find((c) => c.weekId === weekId);
+export async function getComment(
+  user: AppUser,
+  weekId: number
+): Promise<WeekComment | undefined> {
+  const { data, error } = await supabase
+    .from("week_comments")
+    .select("app_user, week_id, text, updated_at")
+    .eq("app_user", user)
+    .eq("week_id", weekId)
+    .maybeSingle();
+  if (error) throw error;
+  return data
+    ? { user: data.app_user, weekId: data.week_id, text: data.text, updatedAt: data.updated_at }
+    : undefined;
 }
 
-export function setComment(weekId: number, text: string) {
-  const comments = getComments().filter((c) => c.weekId !== weekId);
-  writeJSON(KEYS.comments, [
-    ...comments,
-    { weekId, text, updatedAt: new Date().toISOString() },
-  ]);
-}
-
-// ---------- Mensurations ----------
-
-export function getMeasurements(): Measurement[] {
-  return readJSON<Measurement[]>(KEYS.measurements, []);
-}
-
-export function setMeasurement(measurement: Measurement) {
-  const measurements = getMeasurements().filter(
-    (m) => m.weekId !== measurement.weekId
-  );
-  writeJSON(KEYS.measurements, [...measurements, measurement]);
+export async function setComment(
+  user: AppUser,
+  weekId: number,
+  text: string
+): Promise<void> {
+  const { error } = await supabase.from("week_comments").upsert({
+    app_user: user,
+    week_id: weekId,
+    text,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) throw error;
 }
 
 // ---------- Semaine active ----------
 
-export function getActiveWeek(): number {
-  return readJSON<number>(KEYS.activeWeek, 1);
+export async function getActiveWeek(): Promise<number> {
+  const { data, error } = await supabase
+    .from("app_state")
+    .select("active_week")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) throw error;
+  return data?.active_week ?? 1;
 }
 
-export function setActiveWeek(weekId: number) {
-  writeJSON(KEYS.activeWeek, weekId);
+export async function setActiveWeek(weekId: number): Promise<void> {
+  const { error } = await supabase
+    .from("app_state")
+    .upsert({ id: 1, active_week: weekId });
+  if (error) throw error;
 }
 
 // ---------- Export / Import ----------
 
-export function exportAllData(): ExportedData {
+export async function exportAllData(): Promise<ExportedData> {
+  const [loads, weights, comments, activeWeekId] = await Promise.all([
+    getLoads(),
+    getWeights(),
+    getComments(),
+    getActiveWeek(),
+  ]);
   return {
-    loads: getLoads(),
-    weights: getWeights(),
-    comments: getComments(),
-    measurements: getMeasurements(),
-    activeWeekId: getActiveWeek(),
+    loads,
+    weights,
+    comments,
+    activeWeekId,
     exportedAt: new Date().toISOString(),
   };
 }
 
-export function importAllData(data: ExportedData) {
-  writeJSON(KEYS.loads, data.loads ?? []);
-  writeJSON(KEYS.weights, data.weights ?? []);
-  writeJSON(KEYS.comments, data.comments ?? []);
-  writeJSON(KEYS.measurements, data.measurements ?? []);
-  writeJSON(KEYS.activeWeek, data.activeWeekId ?? 1);
+export async function importAllData(data: ExportedData): Promise<void> {
+  await Promise.all([
+    ...(data.loads ?? []).map((l) => setLoad(l)),
+    ...(data.weights ?? []).map((w) => addWeight(w)),
+    ...(data.comments ?? []).map((c) => setComment(c.user, c.weekId, c.text)),
+    setActiveWeek(data.activeWeekId ?? 1),
+  ]);
 }

@@ -1,14 +1,18 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { weeks, getWeekById } from "@/data/weeks";
 import { getPhaseById } from "@/data/program";
 import WeekWorkouts from "@/components/WeekWorkouts";
+import { getCurrentUser } from "@/lib/session";
 
 export function generateStaticParams() {
   return weeks.map((w) => ({ id: String(w.id) }));
 }
 
 export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
+  const currentUser = await getCurrentUser();
+  if (currentUser !== "amelie") redirect("/suivi");
+
   const { id } = await props.params;
   const weekId = Number(id);
 

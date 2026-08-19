@@ -14,15 +14,15 @@ export default function WeekWorkouts({ weekId, previousWeekId }: WeekWorkoutsPro
   const [refreshKey, setRefreshKey] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
 
-  function handleCopy() {
+  async function handleCopy() {
     if (previousWeekId === null) return;
-    const previousLoads = getLoadsForWeek(previousWeekId);
+    const previousLoads = await getLoadsForWeek(previousWeekId);
     if (previousLoads.length === 0) {
       setMessage(`Aucune charge enregistrée en semaine ${previousWeekId}.`);
       setTimeout(() => setMessage(null), 2500);
       return;
     }
-    copyLoadsFromWeek(previousWeekId, weekId);
+    await copyLoadsFromWeek(previousWeekId, weekId);
     setRefreshKey((k) => k + 1);
     setMessage(`Charges de la semaine ${previousWeekId} copiées.`);
     setTimeout(() => setMessage(null), 2500);

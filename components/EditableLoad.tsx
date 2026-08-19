@@ -17,10 +17,16 @@ export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) 
   const savedTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const existing = getLoad(exerciseId, weekId);
-    setWeight(existing?.weight != null ? String(existing.weight) : "");
-    setReps(existing?.reps ?? "");
-    setDone(existing?.done ?? false);
+    let cancelled = false;
+    getLoad(exerciseId, weekId).then((existing) => {
+      if (cancelled) return;
+      setWeight(existing?.weight != null ? String(existing.weight) : "");
+      setReps(existing?.reps ?? "");
+      setDone(existing?.done ?? false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [exerciseId, weekId]);
 
   function flashSaved() {
@@ -29,12 +35,12 @@ export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) 
     savedTimeout.current = setTimeout(() => setSaved(false), 1100);
   }
 
-  function persist(overrides: { weight?: string; reps?: string; done?: boolean }) {
+  async function persist(overrides: { weight?: string; reps?: string; done?: boolean }) {
     const w = overrides.weight ?? weight;
     const r = overrides.reps ?? reps;
     const d = overrides.done ?? done;
     const parsedWeight = w.trim() === "" ? null : Number(w.replace(",", "."));
-    setLoad({
+    await setLoad({
       exerciseId,
       weekId,
       weight: parsedWeight !== null && Number.isNaN(parsedWeight) ? null : parsedWeight,
@@ -47,7 +53,7 @@ export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) 
   function toggleDone() {
     const next = !done;
     setDone(next);
-    persist({ done: next });
+    persist({ done: next }).catch(console.error);
   }
 
   return (
@@ -62,7 +68,7 @@ export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) 
           value={weight}
           placeholder="—"
           onChange={(e) => setWeight(e.target.value)}
-          onBlur={() => persist({})}
+          onBlur={() => persist({}).catch(console.error)}
           className="w-20 rounded-xl border border-border bg-background px-3 py-2 text-center text-base font-semibold text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25 sm:w-24"
         />
       </label>
@@ -76,7 +82,7 @@ export default function EditableLoad({ exerciseId, weekId }: EditableLoadProps) 
           value={reps}
           placeholder="—"
           onChange={(e) => setReps(e.target.value)}
-          onBlur={() => persist({})}
+          onBlur={() => persist({}).catch(console.error)}
           className="w-24 rounded-xl border border-border bg-background px-3 py-2 text-center text-base font-semibold text-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25 sm:w-28"
         />
       </label>

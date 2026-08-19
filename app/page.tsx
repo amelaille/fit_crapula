@@ -1,31 +1,50 @@
 import Link from "next/link";
 import { profile } from "@/data/program";
 import DashboardClient from "@/components/DashboardClient";
+import { getCurrentUser } from "@/lib/session";
 
 const shortcuts = [
   { href: "/programme", label: "Programme", desc: "Philosophie, intensité, marche, cardio", emoji: "📘" },
   { href: "/nutrition", label: "Nutrition", desc: "Macros, repas, courses, règles", emoji: "🥗" },
-  { href: "/suivi", label: "Suivi", desc: "Poids, mensurations, journal", emoji: "📈" },
+  { href: "/suivi", label: "Suivi", desc: "Poids, journal", emoji: "📈" },
   { href: "/semaine/1", label: "Semaines", desc: "Séances et charges éditables", emoji: "🏋️" },
 ];
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const currentUser = (await getCurrentUser())!;
+  const isAmelie = currentUser === "amelie";
+  const visibleShortcuts = isAmelie ? shortcuts : shortcuts.filter((s) => s.href === "/suivi");
+
   return (
     <div className="flex flex-col gap-8">
       <header>
-        <p className="text-sm font-medium text-accent">{profile.title}</p>
-        <h1 className="mt-1 text-2xl font-semibold text-foreground sm:text-3xl">
-          {profile.goal}
-        </h1>
-        <p className="mt-2 text-sm text-muted">Objectif : {profile.target}</p>
+        {isAmelie ? (
+          <>
+            <p className="text-sm font-medium text-accent">{profile.title}</p>
+            <h1 className="mt-1 text-2xl font-semibold text-foreground sm:text-3xl">
+              {profile.goal}
+            </h1>
+            <p className="mt-2 text-sm text-muted">Objectif : {profile.target}</p>
+          </>
+        ) : (
+          <>
+            <p className="text-sm font-medium text-accent">Suivi</p>
+            <h1 className="mt-1 text-2xl font-semibold text-foreground sm:text-3xl">
+              Ton évolution
+            </h1>
+            <p className="mt-2 text-sm text-muted">
+              Ta courbe, tes commentaires, et l&apos;avancée d&apos;Amélie.
+            </p>
+          </>
+        )}
       </header>
 
-      <DashboardClient />
+      <DashboardClient currentUser={currentUser} />
 
       <section>
         <h2 className="mb-3 text-lg font-semibold text-foreground">Raccourcis</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {shortcuts.map((s) => (
+          {visibleShortcuts.map((s) => (
             <Link
               key={s.href}
               href={s.href}

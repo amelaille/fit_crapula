@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/session";
 import {
   profile,
   pillars,
@@ -40,7 +42,10 @@ const toc = [
   { id: "apres", label: "Après les 3 mois — anti-yoyo" },
 ];
 
-export default function ProgrammePage() {
+export default async function ProgrammePage() {
+  const currentUser = await getCurrentUser();
+  if (currentUser !== "amelie") redirect("/suivi");
+
   return (
     <div className="flex flex-col gap-8">
       <header>

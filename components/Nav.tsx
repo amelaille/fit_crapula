@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { AppUser } from "@/lib/types";
+import { APP_USER_LABELS } from "@/lib/types";
+import { logout } from "@/lib/auth-actions";
 
 const links = [
   { href: "/", label: "Accueil", icon: HomeIcon },
@@ -15,8 +18,10 @@ function isActive(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 
-export default function Nav() {
+export default function Nav({ user }: { user: AppUser }) {
   const pathname = usePathname();
+  const visibleLinks =
+    user === "amelie" ? links : links.filter((l) => l.href === "/" || l.href === "/suivi");
 
   return (
     <>
@@ -30,7 +35,7 @@ export default function Nav() {
             <span>Mon programme</span>
           </Link>
           <nav className="flex items-center gap-1">
-            {links.map(({ href, label }) => {
+            {visibleLinks.map(({ href, label }) => {
               const active = isActive(pathname, href);
               return (
                 <Link
@@ -47,13 +52,42 @@ export default function Nav() {
               );
             })}
           </nav>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-muted">{APP_USER_LABELS[user]}</span>
+            <button
+              type="button"
+              onClick={() => logout()}
+              className="rounded-full border border-border px-3.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground"
+            >
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Barre du haut — mobile */}
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/85 px-4 py-2.5 backdrop-blur sm:hidden">
+        <Link href="/" className="flex items-center gap-2 font-semibold text-foreground">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-accent-foreground">
+            ✿
+          </span>
+        </Link>
+        <div className="flex items-center gap-2.5">
+          <span className="text-sm font-medium text-muted">{APP_USER_LABELS[user]}</span>
+          <button
+            type="button"
+            onClick={() => logout()}
+            className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted"
+          >
+            Déconnexion
+          </button>
         </div>
       </header>
 
       {/* Barre du bas — mobile */}
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur sm:hidden">
         <div className="mx-auto flex max-w-md items-stretch justify-between px-2 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1.5">
-          {links.map(({ href, label, icon: Icon }) => {
+          {visibleLinks.map(({ href, label, icon: Icon }) => {
             const active = isActive(pathname, href);
             return (
               <Link

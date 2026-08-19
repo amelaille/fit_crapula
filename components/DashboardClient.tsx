@@ -6,7 +6,7 @@ import { getActiveWeek, setActiveWeek, getWeights } from "@/lib/storage";
 import { getWeekById } from "@/data/weeks";
 import { getPhaseById, weeklyRecap, fridayWalkBonus } from "@/data/program";
 import { weeklySchedule } from "@/data/workouts";
-import type { WeightEntry } from "@/lib/types";
+import type { AppUser, WeightEntry } from "@/lib/types";
 import WeekSelector from "./WeekSelector";
 import WeightChart from "./WeightChart";
 
@@ -20,18 +20,22 @@ const DAY_NAMES = [
   "Samedi",
 ];
 
-export default function DashboardClient() {
+export default function DashboardClient({ currentUser }: { currentUser: AppUser }) {
+  const isAmelie = currentUser === "amelie";
   const [weekId, setWeekId] = useState(1);
   const [weights, setWeights] = useState<WeightEntry[]>([]);
 
   useEffect(() => {
-    setWeekId(getActiveWeek());
-    setWeights(getWeights());
-  }, []);
+    (async () => {
+      const [week, weightEntries] = await Promise.all([getActiveWeek(), getWeights()]);
+      setWeekId(week);
+      setWeights(weightEntries.filter((w) => w.user === currentUser));
+    })();
+  }, [currentUser]);
 
   function handleWeekChange(id: number) {
     setWeekId(id);
-    setActiveWeek(id);
+    setActiveWeek(id).catch(console.error);
   }
 
   const week = getWeekById(weekId);
@@ -44,56 +48,65 @@ export default function DashboardClient() {
     recap.caloriesType === "training" ? week.caloriesTraining : week.caloriesRest;
   const todayWalk = week.walkMinutes + (recap.walkType === "friday" ? fridayWalkBonus : 0);
 
-  const lastWeight = [...weights].sort((a, b) => b.weekId - a.weekId)[0];
-  const variation = lastWeight ? Math.round((lastWeight.weight - 72) * 10) / 10 : null;
+  const sortedWeights = [...weights].sort((a, b) => a.weekId - b.weekId);
+  const firstWeight = sortedWeights[0];
+  const lastWeight = sortedWeights[sortedWeights.length - 1];
+  const variation =
+    lastWeight && firstWeight && lastWeight.weekId !== firstWeight.weekId
+      ? Math.round((lastWeight.weight - firstWeight.weight) * 10) / 10
+      : null;
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Semaine en cours */}
-      <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-accent">
-              Semaine en cours
-            </p>
-            <h2 className="mt-0.5 text-xl font-semibold text-foreground">
-              Semaine {week.id} · Mois {phase.id} — {phase.name}
-            </h2>
-          </div>
-          <WeekSelector value={weekId} onChange={handleWeekChange} label="Changer de semaine" />
-        </div>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <Stat label="Aujourd'hui" value={todayName} />
-          <Stat label="Calories du jour" value={`${todayCalories} kcal`} />
-          <Stat label="Marche" value={`${todayWalk} min`} />
-        </div>
-        <Link
-          href={`/semaine/${week.id}`}
-          className="mt-4 inline-flex items-center gap-1 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground"
-        >
-          Voir le détail de la semaine →
-        </Link>
-      </section>
+      {isAmelie && (
+        <>
+          {/* Semaine en cours */}
+          <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+                  Semaine en cours
+                </p>
+                <h2 className="mt-0.5 text-xl font-semibold text-foreground">
+                  Semaine {week.id} · Mois {phase.id} — {phase.name}
+                </h2>
+              </div>
+              <WeekSelector value={weekId} onChange={handleWeekChange} label="Changer de semaine" />
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <Stat label="Aujourd'hui" value={todayName} />
+              <Stat label="Calories du jour" value={`${todayCalories} kcal`} />
+              <Stat label="Marche" value={`${todayWalk} min`} />
+            </div>
+            <Link
+              href={`/semaine/${week.id}`}
+              className="mt-4 inline-flex items-center gap-1 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground"
+            >
+              Voir le détail de la semaine →
+            </Link>
+          </section>
 
-      {/* Rappel du jour */}
-      <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
-        <p className="text-xs font-semibold uppercase tracking-wide text-accent">
-          Rappel du jour ({todayName})
-        </p>
-        <h3 className="mt-1 text-lg font-semibold text-foreground">{recap.session}</h3>
-        <p className="mt-1 text-sm text-muted">
-          Intensité : {recap.intensity}
-          {recap.weighIn ? " · Pesée aujourd'hui" : ""}
-        </p>
-        {scheduleEntry?.sessionId && (
-          <Link
-            href={`/semaine/${week.id}#session-${scheduleEntry.sessionId}`}
-            className="mt-3 inline-block text-sm font-medium text-accent underline underline-offset-2"
-          >
-            Aller à la séance →
-          </Link>
-        )}
-      </section>
+          {/* Rappel du jour */}
+          <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
+            <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+              Rappel du jour ({todayName})
+            </p>
+            <h3 className="mt-1 text-lg font-semibold text-foreground">{recap.session}</h3>
+            <p className="mt-1 text-sm text-muted">
+              Intensité : {recap.intensity}
+              {recap.weighIn ? " · Pesée aujourd'hui" : ""}
+            </p>
+            {scheduleEntry?.sessionId && (
+              <Link
+                href={`/semaine/${week.id}#session-${scheduleEntry.sessionId}`}
+                className="mt-3 inline-block text-sm font-medium text-accent underline underline-offset-2"
+              >
+                Aller à la séance →
+              </Link>
+            )}
+          </section>
+        </>
+      )}
 
       {/* Mini courbe de poids */}
       <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
@@ -106,7 +119,7 @@ export default function DashboardClient() {
               }`}
             >
               {variation > 0 ? "+" : ""}
-              {variation} kg depuis le départ
+              {variation} kg depuis ta première pesée
             </span>
           )}
         </div>

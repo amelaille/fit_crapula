@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fff9f6;
+  --background: #fff5f1;
   --surface: #ffffff;
   --foreground: #2b2230;
   --muted: #8a7d87;
@@ -18,6 +18,10 @@
   --chart-1: #2a78d6;
   --chart-2: #eb6834;
   --chart-3: #1baf7a;
+
+  /* Couleurs d'identité fixes (indépendantes de qui est connecté·e) */
+  --user-amelie: #d6336c;
+  --user-sena: #5b21b6;
 }
 
 @theme inline {
@@ -55,6 +59,24 @@
     --chart-1: #3987e5;
     --chart-2: #d95926;
     --chart-3: #199e70;
+
+    --user-amelie: #f0578f;
+    --user-sena: #a78bfa;
+  }
+}
+
+/* Thème par utilisateur·rice connecté·e : Amélie = rose (défaut), Sena = violet foncé */
+:root[data-user="sena"] {
+  --accent: #5b21b6;
+  --accent-foreground: #ffffff;
+  --accent-soft: #ede9fe;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-user="sena"] {
+    --accent: #a78bfa;
+    --accent-foreground: #1e1b2e;
+    --accent-soft: #2e2350;
   }
 }
 

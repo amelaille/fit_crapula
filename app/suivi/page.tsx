@@ -7,8 +7,11 @@ import {
 } from "@/data/program";
 import InfoCallout from "@/components/InfoCallout";
 import SuiviClient from "@/components/SuiviClient";
+import { getCurrentUser } from "@/lib/session";
 
-export default function SuiviPage() {
+export default async function SuiviPage() {
+  const currentUser = (await getCurrentUser())!;
+
   return (
     <div className="flex flex-col gap-10">
       <header>
@@ -48,7 +51,7 @@ export default function SuiviPage() {
         </div>
       </section>
 
-      <SuiviClient />
+      <SuiviClient currentUser={currentUser} />
 
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold text-foreground">{stagnationNote}</h2>

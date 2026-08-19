@@ -88,7 +88,7 @@ export const sessionB: WorkoutSession = {
     },
     {
       id: "developpe-halteres-assis",
-      name: "Développé haltères assis (léger)",
+      name: "Développé haltères assis (max 8 kg)",
       sets: 3,
       reps: "12",
       rest: "60 s",
@@ -106,7 +106,7 @@ export const sessionB: WorkoutSession = {
     },
     {
       id: "elevations-laterales",
-      name: "Élévations latérales (2-4 kg)",
+      name: "Élévations latérales (max 4 kg)",
       sets: 3,
       reps: "15",
       rest: "45 s",

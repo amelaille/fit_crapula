@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/session";
 import {
   userStats,
   sedentaryJobWarning,
@@ -17,7 +19,10 @@ import MealCard from "@/components/MealCard";
 import MacroTable from "@/components/MacroTable";
 import DayToggle from "@/components/DayToggle";
 
-export default function NutritionPage() {
+export default async function NutritionPage() {
+  const currentUser = await getCurrentUser();
+  if (currentUser !== "amelie") redirect("/suivi");
+
   return (
     <div className="flex flex-col gap-10">
       <header>

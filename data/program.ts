@@ -3,10 +3,10 @@
 import type { Phase } from "@/lib/types";
 
 export const profile = {
-  title: "Femme, 23 ans, 72 kg",
+  title: "Femme, 23 ans, 66 kg",
   goal:
     "Fessiers développés, jambes toniques et fines, haut du corps tonique sans volume, ventre plat",
-  target: "65-66 kg à la fin des 3 mois, sans effet yoyo",
+  target: "~60-61 kg à la fin des 3 mois — objectif long terme : 56-59 kg, sans effet yoyo",
 };
 
 // ---------- 1. Comprendre ton corps de rêve ----------
@@ -229,9 +229,9 @@ export const phases: Phase[] = [
     id: 1,
     name: "Installation",
     weekRange: [1, 4],
-    objective: "-3 kg (dont ~1 kg d'eau la première semaine)",
-    expectedWeight: "~69 kg",
-    caloriesTraining: 1700,
+    objective: "-2,5 kg (dont ~1 kg d'eau la première semaine)",
+    expectedWeight: "~63,5 kg",
+    caloriesTraining: 1650,
     caloriesRest: 1400,
     points: [
       "Volume d'entraînement : tel que décrit dans le programme",
@@ -246,12 +246,12 @@ export const phases: Phase[] = [
     id: 2,
     name: "Intensification",
     weekRange: [5, 8],
-    objective: "-2 kg",
-    expectedWeight: "~67 kg",
-    caloriesTraining: 1650,
+    objective: "-1,7 kg",
+    expectedWeight: "~62 kg",
+    caloriesTraining: 1600,
     caloriesRest: 1350,
     points: [
-      "Calories : 1650 / 1350 (petit ajustement, ton corps est plus léger)",
+      "Calories : 1600 / 1350 (petit ajustement, ton corps est plus léger)",
       "Ajoute 1 série sur le hip thrust et le squat (5 séries au lieu de 4)",
       "Ajoute 5 min au cardio du mercredi",
       "Passe la marche volontaire à 55 min/jour (ajoute 10 min à la sortie du matin)",
@@ -264,12 +264,12 @@ export const phases: Phase[] = [
     id: 3,
     name: "Définition",
     weekRange: [9, 12],
-    objective: "-2 kg",
-    expectedWeight: "~65 kg",
-    caloriesTraining: 1600,
+    objective: "-1,5 kg",
+    expectedWeight: "~60-61 kg",
+    caloriesTraining: 1550,
     caloriesRest: 1300,
     points: [
-      "Calories : 1600 / 1300",
+      "Calories : 1550 / 1300",
       "Réduis les repos à 60-75 s sur les séances B et C (densité)",
       "Ajoute une 2e séance de cardio léger le vendredi (marche rapide 40 min ou vélo)",
       "Maintiens les charges lourdes le lundi — ne baisse jamais l'intensité en fin de sèche, c'est le signal qui dit à ton corps de garder le muscle",
@@ -321,7 +321,7 @@ export const afterProgram = {
     "Prise de masse ciblée : +200 kcal au-dessus de l'entretien pendant 3-4 mois pour construire davantage de fessiers, puis nouvelle sèche",
   ],
   vision:
-    "Le physique que tu vises se construit sur 18-24 mois, en alternant ces phases. Les 3 mois qui viennent sont le premier cycle, pas la ligne d'arrivée. C'est précisément cette vision longue qui supprime le yoyo : il n'y a plus de \"fin de régime\", donc plus de \"reprise après régime\".",
+    "Le physique que tu vises se construit sur 18-24 mois, en alternant ces phases, jusqu'à un poids final autour de 56-59 kg. Les 3 mois qui viennent sont le premier cycle, pas la ligne d'arrivée. C'est précisément cette vision longue qui supprime le yoyo : il n'y a plus de \"fin de régime\", donc plus de \"reprise après régime\".",
 };
 
 export const disclaimer =

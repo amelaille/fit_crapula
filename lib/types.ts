@@ -95,7 +95,18 @@ export type WeekPlan = {
   walkMinutes: number; // marche volontaire/jour cette phase
 };
 
-// ---------- Données persistées (localStorage) ----------
+// ---------- Comptes ----------
+
+export type AppUser = "amelie" | "sena";
+
+export const APP_USERS: AppUser[] = ["amelie", "sena"];
+
+export const APP_USER_LABELS: Record<AppUser, string> = {
+  amelie: "Amélie",
+  sena: "Sena",
+};
+
+// ---------- Données persistées (Supabase) ----------
 
 export type ExerciseLoad = {
   exerciseId: string;
@@ -106,29 +117,23 @@ export type ExerciseLoad = {
 };
 
 export type WeightEntry = {
+  user: AppUser;
   weekId: number; // 1 à 12
   weight: number; // moyenne de la semaine
   date: string; // ISO
 };
 
 export type WeekComment = {
+  user: AppUser;
   weekId: number;
   text: string;
   updatedAt: string;
-};
-
-export type Measurement = {
-  weekId: number;
-  waist?: number;
-  hips?: number;
-  thigh?: number;
 };
 
 export type ExportedData = {
   loads: ExerciseLoad[];
   weights: WeightEntry[];
   comments: WeekComment[];
-  measurements: Measurement[];
   activeWeekId: number;
   exportedAt: string;
 };
