@@ -102,8 +102,8 @@ export type AppUser = "amelie" | "sena";
 export const APP_USERS: AppUser[] = ["amelie", "sena"];
 
 export const APP_USER_LABELS: Record<AppUser, string> = {
-  amelie: "Amélie",
-  sena: "Sena",
+  amelie: "Reine Amé",
+  sena: "Mon Chino",
 };
 
 // ---------- Données persistées (Supabase) ----------

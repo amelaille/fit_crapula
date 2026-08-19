@@ -26,7 +26,7 @@ export default async function SuiviPage() {
         <div className="overflow-x-auto rounded-2xl border border-border">
           <table className="w-full min-w-[520px] border-collapse text-sm">
             <thead>
-              <tr className="bg-nude/60 text-nude-foreground">
+              <tr className="bg-nude text-nude-foreground">
                 <th className="px-4 py-2.5 text-left font-medium">Quoi</th>
                 <th className="px-4 py-2.5 text-left font-medium">Quand</th>
                 <th className="px-4 py-2.5 text-left font-medium">Comment</th>

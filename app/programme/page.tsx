@@ -86,7 +86,7 @@ export default async function ProgrammePage() {
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full min-w-[480px] border-collapse text-sm">
               <thead>
-                <tr className="bg-nude/60 text-nude-foreground">
+                <tr className="bg-nude text-nude-foreground">
                   <th className="px-4 py-2.5 text-left font-medium">Pilier</th>
                   <th className="px-4 py-2.5 text-left font-medium">Ce que ça apporte</th>
                   <th className="px-4 py-2.5 text-left font-medium">Priorité</th>
@@ -118,7 +118,7 @@ export default async function ProgrammePage() {
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full min-w-[480px] border-collapse text-sm">
               <thead>
-                <tr className="bg-nude/60 text-nude-foreground">
+                <tr className="bg-nude text-nude-foreground">
                   <th className="px-4 py-2.5 text-left font-medium">Jour</th>
                   <th className="px-4 py-2.5 text-left font-medium">Séance</th>
                   <th className="px-4 py-2.5 text-left font-medium">Durée</th>
@@ -143,7 +143,7 @@ export default async function ProgrammePage() {
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full min-w-[560px] border-collapse text-sm">
               <thead>
-                <tr className="bg-nude/60 text-nude-foreground">
+                <tr className="bg-nude text-nude-foreground">
                   <th className="px-3 py-2 text-left font-medium">—</th>
                   {weeklyRecap.map((r) => (
                     <th key={r.day} className="px-3 py-2 text-left font-medium">
@@ -185,7 +185,7 @@ export default async function ProgrammePage() {
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full min-w-[520px] border-collapse text-sm">
               <thead>
-                <tr className="bg-nude/60 text-nude-foreground">
+                <tr className="bg-nude text-nude-foreground">
                   <th className="px-4 py-2.5 text-left font-medium">RIR</th>
                   <th className="px-4 py-2.5 text-left font-medium">Sensation</th>
                   <th className="px-4 py-2.5 text-left font-medium">Traduction</th>
@@ -214,7 +214,7 @@ export default async function ProgrammePage() {
             <div className="overflow-x-auto rounded-2xl border border-border">
               <table className="w-full min-w-[640px] border-collapse text-sm">
                 <thead>
-                  <tr className="bg-nude/60 text-nude-foreground">
+                  <tr className="bg-nude text-nude-foreground">
                     <th className="px-4 py-2.5 text-left font-medium">Jour</th>
                     <th className="px-4 py-2.5 text-left font-medium">Séance</th>
                     <th className="px-4 py-2.5 text-left font-medium">RIR cible</th>
@@ -248,7 +248,7 @@ export default async function ProgrammePage() {
             <div className="overflow-x-auto rounded-2xl border border-border">
               <table className="w-full min-w-[480px] border-collapse text-sm">
                 <thead>
-                  <tr className="bg-nude/60 text-nude-foreground">
+                  <tr className="bg-nude text-nude-foreground">
                     <th className="px-4 py-2.5 text-left font-medium">Exercice</th>
                     <th className="px-4 py-2.5 text-left font-medium">Tempo</th>
                     <th className="px-4 py-2.5 text-left font-medium">Pourquoi</th>
@@ -339,7 +339,7 @@ export default async function ProgrammePage() {
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full min-w-[480px] border-collapse text-sm">
               <thead>
-                <tr className="bg-nude/60 text-nude-foreground">
+                <tr className="bg-nude text-nude-foreground">
                   <th className="px-4 py-2.5 text-left font-medium">Moment</th>
                   <th className="px-4 py-2.5 text-left font-medium">Durée</th>
                   <th className="px-4 py-2.5 text-left font-medium">Comment</th>
@@ -385,7 +385,7 @@ export default async function ProgrammePage() {
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full min-w-[400px] border-collapse text-sm">
               <thead>
-                <tr className="bg-nude/60 text-nude-foreground">
+                <tr className="bg-nude text-nude-foreground">
                   <th className="px-4 py-2.5 text-left font-medium">Mois</th>
                   <th className="px-4 py-2.5 text-left font-medium">Cardio</th>
                 </tr>

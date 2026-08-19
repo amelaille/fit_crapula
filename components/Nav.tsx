@@ -26,9 +26,9 @@ export default function Nav({ user }: { user: AppUser }) {
   return (
     <>
       {/* Barre du haut — desktop */}
-      <header className="sticky top-0 z-30 hidden border-b border-border bg-background/85 backdrop-blur sm:block">
+      <header className="sticky top-0 z-30 hidden border-b border-black/20 bg-foreground/95 backdrop-blur sm:block">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3.5">
-          <Link href="/" className="flex items-center gap-2 font-semibold text-foreground">
+          <Link href="/" className="flex items-center gap-2 font-semibold text-nude-foreground">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground">
               ✿
             </span>
@@ -43,8 +43,8 @@ export default function Nav({ user }: { user: AppUser }) {
                   href={href}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-accent-soft text-accent"
-                      : "text-muted hover:bg-nude/60 hover:text-foreground"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-nude-foreground/60 hover:bg-white/10 hover:text-nude-foreground"
                   }`}
                 >
                   {label}
@@ -53,11 +53,11 @@ export default function Nav({ user }: { user: AppUser }) {
             })}
           </nav>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-muted">{APP_USER_LABELS[user]}</span>
+            <span className="text-sm font-medium text-nude-foreground/60">{APP_USER_LABELS[user]}</span>
             <button
               type="button"
               onClick={() => logout()}
-              className="rounded-full border border-border px-3.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground"
+              className="rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-medium text-nude-foreground/60 transition-colors hover:border-white/40 hover:text-nude-foreground"
             >
               Déconnexion
             </button>
@@ -66,18 +66,18 @@ export default function Nav({ user }: { user: AppUser }) {
       </header>
 
       {/* Barre du haut — mobile */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/85 px-4 py-2.5 backdrop-blur sm:hidden">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-foreground">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-black/20 bg-foreground/95 px-4 py-2.5 backdrop-blur sm:hidden">
+        <Link href="/" className="flex items-center gap-2 font-semibold text-nude-foreground">
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-accent-foreground">
             ✿
           </span>
         </Link>
         <div className="flex items-center gap-2.5">
-          <span className="text-sm font-medium text-muted">{APP_USER_LABELS[user]}</span>
+          <span className="text-sm font-medium text-nude-foreground/60">{APP_USER_LABELS[user]}</span>
           <button
             type="button"
             onClick={() => logout()}
-            className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted"
+            className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-nude-foreground/60"
           >
             Déconnexion
           </button>

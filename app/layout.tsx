@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mon programme — 3 mois",
+  title: "Fit & Mimi",
   description: "Suivi personnel du programme sport & nutrition sur 3 mois.",
 };
 

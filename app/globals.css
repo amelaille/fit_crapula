@@ -1,27 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fff5f1;
+  --background: #f9ede2;
   --surface: #ffffff;
-  --foreground: #2b2230;
-  --muted: #8a7d87;
-  --border: rgba(43, 34, 48, 0.09);
-  --accent: #d6336c;
+  --foreground: #1e151c;
+  --muted: #6b4a41;
+  --border: rgba(89, 56, 44, 0.5);
+  --accent: #c56f8c;
   --accent-foreground: #ffffff;
-  --accent-soft: #fbe3ea;
-  --nude: #f3e4d6;
-  --nude-foreground: #6b4a35;
+  --accent-soft: #f3d3de;
+  --nude: #59382c;
+  --nude-foreground: #ffecda;
   --success: #0ca30c;
 
-  --chart-actual: #d6336c;
-  --chart-target: #b5a8ae;
-  --chart-1: #2a78d6;
-  --chart-2: #eb6834;
-  --chart-3: #1baf7a;
+  --chart-actual: #c56f8c;
+  --chart-target: #9c8880;
+  --chart-1: #59382c;
+  --chart-2: #8c5b47;
+  --chart-3: #e8b7a0;
 
   /* Couleurs d'identité fixes (indépendantes de qui est connecté·e) */
-  --user-amelie: #d6336c;
-  --user-sena: #5b21b6;
+  --user-amelie: #c56f8c;
+  --user-sena: #754A63;
 }
 
 @theme inline {
@@ -40,44 +40,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #18121a;
-    --surface: #231b26;
-    --foreground: #f4ecf5;
-    --muted: #ab9ca5;
-    --border: rgba(255, 255, 255, 0.09);
-    --accent: #f0578f;
-    --accent-foreground: #1a1015;
-    --accent-soft: #3a1f2b;
-    --nude: #2e2530;
-    --nude-foreground: #e9d3bf;
-    --success: #0ca30c;
-
-    --chart-actual: #f0578f;
-    --chart-target: #7d717a;
-    --chart-1: #3987e5;
-    --chart-2: #d95926;
-    --chart-3: #199e70;
-
-    --user-amelie: #f0578f;
-    --user-sena: #a78bfa;
-  }
-}
-
-/* Thème par utilisateur·rice connecté·e : Amélie = rose (défaut), Sena = violet foncé */
+/* Thème par utilisateur·rice connecté·e : Amélie = rose vif (défaut), Sena = rose mauve */
 :root[data-user="sena"] {
-  --accent: #5b21b6;
-  --accent-foreground: #ffffff;
-  --accent-soft: #ede9fe;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root[data-user="sena"] {
-    --accent: #a78bfa;
-    --accent-foreground: #1e1b2e;
-    --accent-soft: #2e2350;
-  }
+  --accent: #754A63;
+  --accent-foreground: #ffecda;
+  --accent-soft: #ead9df;
 }
 
 body {

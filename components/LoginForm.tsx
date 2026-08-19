@@ -26,11 +26,10 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-full max-w-sm flex-col gap-5 rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-7"
+      className="flex w-full max-w-sm flex-col gap-5 rounded-xl border border-border bg-surface p-6 shadow-sm sm:p-7"
     >
       <div>
-        <h1 className="text-xl font-semibold text-foreground">Tu es quel mimi ?</h1>
-        <p className="mt-1 text-sm text-muted">Connecte-toi pour accéder au programme.</p>
+        <h1 className="text-xl font-semibold text-center">Tu es quel mimi ?</h1>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
@@ -52,7 +51,7 @@ export default function LoginForm() {
       </div>
 
       <label className="flex flex-col gap-1">
-        <span className="text-[0.68rem] font-medium uppercase tracking-wide text-muted">
+        <span className="text-[0.68rem] font-medium uppercase tracking-wide">
           Mot de passe
         </span>
         <input
@@ -64,7 +63,7 @@ export default function LoginForm() {
         />
       </label>
 
-      {error && <p className="text-sm text-nude-foreground">{error}</p>}
+      {error && <p className="text-sm text-nude">{error}</p>}
 
       <button
         type="submit"

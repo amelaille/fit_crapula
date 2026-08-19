@@ -7,7 +7,7 @@ export default function MacroTable({ macros }: { macros: MonthMacros }) {
     <div className="overflow-x-auto rounded-2xl border border-border">
       <table className="w-full min-w-[420px] border-collapse text-sm">
         <thead>
-          <tr className="bg-nude/60 text-nude-foreground">
+          <tr className="bg-nude text-nude-foreground">
             <th className="px-4 py-2.5 text-left font-medium">—</th>
             <th className="px-4 py-2.5 text-left font-medium">Jours d&apos;entraînement</th>
             <th className="px-4 py-2.5 text-left font-medium">Jours de repos</th>

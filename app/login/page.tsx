@@ -5,7 +5,7 @@ export default function LoginPage() {
   return (
     <div className="isolate flex h-screen items-center justify-center">
       <Image
-                src="/image.png"
+                src="/login.png"
                 alt="Chats sportifs"
                 fill
                 className="object-cover -z-10"

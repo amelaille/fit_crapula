@@ -108,7 +108,7 @@ export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
 
         {week.trainingAdjustments && week.trainingAdjustments.length > 0 && (
           <div className="mt-4 rounded-2xl bg-nude/60 px-4 py-3 text-sm">
-            <p className="font-medium text-nude-foreground">Ajustements de la séance ce mois-ci</p>
+            <p className="font-medium text-foreground">Ajustements de la séance ce mois-ci</p>
             <ul className="mt-1.5 flex flex-col gap-1 text-foreground/80">
               {week.trainingAdjustments.map((adj) => (
                 <li key={adj}>— {adj}</li>
