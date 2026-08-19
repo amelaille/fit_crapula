@@ -129,11 +129,3 @@ export type WeekComment = {
   text: string;
   updatedAt: string;
 };
-
-export type ExportedData = {
-  loads: ExerciseLoad[];
-  weights: WeightEntry[];
-  comments: WeekComment[];
-  activeWeekId: number;
-  exportedAt: string;
-};

@@ -1,4 +1,4 @@
-import type { AppUser, ExerciseLoad, WeightEntry, WeekComment, ExportedData } from "./types";
+import type { AppUser, ExerciseLoad, WeightEntry, WeekComment } from "./types";
 import { supabase } from "./supabase/client";
 
 // Toutes les fonctions parlent à Supabase (Postgres). Elles sont async et
@@ -171,31 +171,4 @@ export async function setActiveWeek(weekId: number): Promise<void> {
     .from("app_state")
     .upsert({ id: 1, active_week: weekId });
   if (error) throw error;
-}
-
-// ---------- Export / Import ----------
-
-export async function exportAllData(): Promise<ExportedData> {
-  const [loads, weights, comments, activeWeekId] = await Promise.all([
-    getLoads(),
-    getWeights(),
-    getComments(),
-    getActiveWeek(),
-  ]);
-  return {
-    loads,
-    weights,
-    comments,
-    activeWeekId,
-    exportedAt: new Date().toISOString(),
-  };
-}
-
-export async function importAllData(data: ExportedData): Promise<void> {
-  await Promise.all([
-    ...(data.loads ?? []).map((l) => setLoad(l)),
-    ...(data.weights ?? []).map((w) => addWeight(w)),
-    ...(data.comments ?? []).map((c) => setComment(c.user, c.weekId, c.text)),
-    setActiveWeek(data.activeWeekId ?? 1),
-  ]);
 }

@@ -6,8 +6,6 @@ import {
   addWeight,
   getComments,
   setComment,
-  exportAllData,
-  importAllData,
   getActiveWeek,
 } from "@/lib/storage";
 import type { AppUser, WeightEntry, WeekComment } from "@/lib/types";
@@ -25,7 +23,6 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
 
   const [flash, setFlash] = useState<string | null>(null);
   const flashTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function refreshAll() {
     const [w, c] = await Promise.all([getWeights(), getComments()]);
@@ -73,41 +70,6 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
     await setComment(currentUser, selectedWeek, commentInput);
     await refreshAll();
     showFlash(`Commentaire enregistré pour la semaine ${selectedWeek}.`);
-  }
-
-  async function handleExport() {
-    const data = await exportAllData();
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `fitapp-export-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  function handleImportClick() {
-    fileInputRef.current?.click();
-  }
-
-  function handleImportFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const data = JSON.parse(reader.result as string);
-        await importAllData(data);
-        await refreshAll();
-        showFlash("Données importées avec succès.");
-      } catch {
-        showFlash("Le fichier importé est invalide.");
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = "";
   }
 
   const sortedComments = [...comments].sort((a, b) => b.weekId - a.weekId);
@@ -204,37 +166,6 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
         )}
       </section>
 
-      {/* Export / Import */}
-      <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold text-foreground">Sauvegarde de tes données</h2>
-        <p className="text-sm text-muted">
-          Tes données sont synchronisées avec la base Supabase partagée. Exporte quand même
-          régulièrement un fichier de sauvegarde pour ne rien perdre.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={handleExport}
-            className="rounded-full border border-accent bg-accent-soft px-4 py-2 text-sm font-medium text-accent"
-          >
-            Export JSON
-          </button>
-          <button
-            type="button"
-            onClick={handleImportClick}
-            className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-nude/60"
-          >
-            Import JSON
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="application/json"
-            onChange={handleImportFile}
-            className="hidden"
-          />
-        </div>
-      </section>
 
       {flash && (
         <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background shadow-lg sm:bottom-6">
