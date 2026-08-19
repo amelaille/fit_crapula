@@ -6,12 +6,13 @@ import type { AppUser } from "@/lib/types";
 import { APP_USER_LABELS } from "@/lib/types";
 import { logout } from "@/lib/auth-actions";
 import Image from "next/image";
+import { Home, Dumbbell, Apple, ChartColumn } from "lucide-react";
 
 const links = [
-  { href: "/", label: "Accueil", icon: HomeIcon },
-  { href: "/programme", label: "Programme", icon: BookIcon },
-  { href: "/nutrition", label: "Nutrition", icon: AppleIcon },
-  { href: "/suivi", label: "Suivi", icon: ChartIcon },
+  { href: "/", label: "Accueil", icon: Home },
+  { href: "/programme", label: "Programme", icon: Dumbbell },
+  { href: "/nutrition", label: "Nutrition", icon: Apple },
+  { href: "/suivi", label: "Suivi", icon: ChartColumn },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -103,7 +104,7 @@ export default function Nav({ user }: { user: AppUser }) {
                 className="rounded-xl text-nude-foreground transition-colors hover:bg-white/10 hover:text-nude-foreground"
               >
                 <Icon
-                  className={`h-7 w-7 ${active ? "text-accent" : "text-muted"}`}
+                  className={`h-6 w-6 ${active ? "text-accent" : "text-muted"}`}
                 />
               </Link>
             );
@@ -114,62 +115,3 @@ export default function Nav({ user }: { user: AppUser }) {
   );
 }
 
-function HomeIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 11.5L12 4l8 7.5M6 10v9a1 1 0 0 0 1 1h3v-5.5h4V20h3a1 1 0 0 0 1-1v-9"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function BookIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 5.5C4 4.67 4.67 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13ZM20 5.5c0-.83-.67-1.5-1.5-1.5H12v16h6.5a1.5 1.5 0 0 0 1.5-1.5v-13Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function AppleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M15.5 8.2c1.9-.1 3 .9 3.7 2-2.9 1.6-2.4 5.5.5 6.7-.5 1.4-1.2 2.7-2.4 3.9-1 1-2 1.2-3 .6-.9-.5-1.9-.5-2.8 0-1.1.6-2 .3-3-.6C6 18.2 4.8 14.6 6 11.6c.9-2.2 2.7-3.2 4.4-3.2 1 0 1.8.5 2.5.5.6 0 1.6-.6 2.6-.7Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M13.5 6c.4-.9 1.3-1.7 2.3-1.8-.1 1-.6 1.9-1.3 2.5-.6.6-1.5 1-2.4.9 0-.9.6-1.9 1.4-2.6Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ChartIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 20V10M10 20V4M16 20v-7M20 20H4"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
