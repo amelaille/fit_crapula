@@ -42,3 +42,16 @@ export const PROGRAM_END = new Date(
   PROGRAM_START.getMonth(),
   PROGRAM_START.getDate() + TOTAL_WEEKS * 7 - 1
 );
+
+const WEEKDAY_ORDER = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
+/** Date calendaire d'un jour donné (ex: "Mardi") au sein d'une semaine du programme (1 à 12). */
+export function getDateForWeekDay(weekId: number, dayName: string): Date {
+  const offset = WEEKDAY_ORDER.indexOf(dayName);
+  const totalDays = (weekId - 1) * 7 + offset;
+  return new Date(
+    PROGRAM_START.getFullYear(),
+    PROGRAM_START.getMonth(),
+    PROGRAM_START.getDate() + totalDays
+  );
+}

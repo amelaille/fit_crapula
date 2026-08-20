@@ -1,13 +1,15 @@
 import type { Exercise } from "@/lib/types";
 import EditableLoad from "./EditableLoad";
+import ReadOnlyLoad from "./ReadOnlyLoad";
 
 type ExerciseCardProps = {
   exercise: Exercise;
   weekId: number;
   fallback?: boolean;
+  readOnly?: boolean;
 };
 
-export default function ExerciseCard({ exercise, weekId, fallback }: ExerciseCardProps) {
+export default function ExerciseCard({ exercise, weekId, fallback, readOnly }: ExerciseCardProps) {
   return (
     <div className="rounded-2xl border border-border bg-background/60 p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -35,7 +37,11 @@ export default function ExerciseCard({ exercise, weekId, fallback }: ExerciseCar
       )}
 
       <div className="mt-3.5 border-t border-border pt-3.5">
-        <EditableLoad exerciseId={exercise.id} weekId={weekId} fallback={fallback} />
+        {readOnly ? (
+          <ReadOnlyLoad exerciseId={exercise.id} weekId={weekId} />
+        ) : (
+          <EditableLoad exerciseId={exercise.id} weekId={weekId} fallback={fallback} />
+        )}
       </div>
     </div>
   );

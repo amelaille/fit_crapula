@@ -207,6 +207,8 @@ export const cardio = {
   ],
   warning:
     "Important : pas plus de cardio que ça. Trop de cardio en déficit brûle du muscle fessier — exactement ce que tu ne veux pas. La marche quotidienne fait le travail de fond, la musculation fait la forme.",
+  mobilityNote:
+    "N'oublie pas quelques minutes de mobilité (étirements, articulations) après la course.",
 };
 
 // ---------- 3.9 Progression absolue ----------
@@ -291,6 +293,7 @@ export const periodsNote =
 export const stagnationChecklist = [
   "Vérifie tes pesées d'aliments — les huiles, beurres et sauces sont les coupables dans 80% des cas",
   "Chronomètre honnêtement ta marche volontaire pendant 3 jours — c'est souvent 25 min réelles quand on croit en faire 45",
+  "Vérifie que ton tour de taille ne baisse pas (si la taille descend, tu n'es pas vraiment en stagnation)",
   "Seulement ensuite, retire 100 kcal (glucides) des jours d'entraînement",
 ];
 

@@ -74,6 +74,7 @@ export const sessionB: WorkoutSession = {
     "RIR 3 partout, charges plafonnées, aucune progression en poids.",
   intensityFeeling:
     "Ça chauffe, jamais de forcing. Tu dois sortir fraîche. Si tu es épuisée, tu es allée trop fort.",
+  warmup: "Juste les articulations — séance légère.",
   note:
     "Objectif : entretenir et tonifier, pas construire du volume. Charges modérées, tempo contrôlé, repos courts. Règle du mardi : tu ne montes jamais au-dessus de 4 kg aux élévations latérales, ni au-dessus de 8 kg par haltère au développé. Une fois ces plafonds atteints, tu restes dessus et tu ajoutes des répétitions uniquement. Pas de curl biceps ni d'extensions triceps isolées dans ce programme — le tirage et les pompes suffisent largement à garder des bras toniques sans ajouter de volume.",
   exercises: [
@@ -141,6 +142,8 @@ export const sessionC: WorkoutSession = {
   intensityLabel: "RIR 2 partout. Charges à ~85% de celles du lundi, plus de volume.",
   intensityFeeling:
     "Dur mais répétable — tu ne dois jamais avoir l'impression de survivre.",
+  warmup:
+    "5 min cardio (sauf si tu es venue à pied) + articulations + 10 séries à vide du premier exo.",
   exercises: [
     {
       id: "squat-barre-goblet",
@@ -201,6 +204,8 @@ export const sessionD: WorkoutSession = {
     "RIR 0-1 sur les isolations, charges légères, repos courts (45-60 s).",
   intensityFeeling:
     "Objectif congestion et brûlure, pas performance. Charge légère, intention maximale sur chaque contraction.",
+  warmup:
+    "5 min cardio (sauf si tu es venue à pied) + articulations + 10 séries à vide du premier exo.",
   exercises: [
     {
       id: "hipthrust-unilateral",

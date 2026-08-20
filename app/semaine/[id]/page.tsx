@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { weeks, getWeekById } from "@/data/weeks";
 import { getPhaseById } from "@/data/program";
-import WeekWorkouts from "@/components/WeekWorkouts";
+import WeekSessions from "@/components/WeekSessions";
 import { getCurrentUser } from "@/lib/session";
 
 export function generateStaticParams() {
@@ -118,7 +118,7 @@ export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
         )}
       </header>
 
-      <WeekWorkouts weekId={week.id} previousWeekId={previousWeekId} />
+      <WeekSessions weekId={week.id} phaseId={phase.id} />
     </div>
   );
 }

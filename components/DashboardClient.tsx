@@ -71,7 +71,7 @@ export default function DashboardClient({ currentUser }: { currentUser: AppUser 
               Semaine en cours
             </p>
             <h2 className="mt-0.5 text-xl font-semibold text-foreground">
-              Semaine {week.id} · Mois {phase.id} — {phase.name}
+              Semaine {week.id} - {phase.name}
             </h2>
             <p className="mt-1 text-sm text-muted">{week.focus}</p>
             {(week.isDeload || week.isPhotoWeek) && (
