@@ -33,7 +33,7 @@ export default function ReadOnlyLoad({ exerciseId, weekId }: ReadOnlyLoadProps) 
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+    <div className="flex flex-wrap items-center justify-center text-center gap-4 sm:gap-6">
       <div className="flex flex-col gap-1">
         <span className="text-[0.68rem] font-medium uppercase tracking-wide text-muted">
           Charge (kg)

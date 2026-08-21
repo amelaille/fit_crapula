@@ -15,7 +15,7 @@ export default async function DashboardPage() {
   const visibleShortcuts = isAmelie ? shortcuts : shortcuts.filter((s) => s.href === "/suivi");
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <header className="text-center">
         {isAmelie ? (
           <>

@@ -62,16 +62,14 @@ function CardioBody({ phaseId }: { phaseId: PhaseId }) {
   const monthData = cardio.months.find((m) => m.month === phaseId) ?? cardio.months[0];
   return (
     <div className="flex flex-col gap-3">
-      <div className="rounded-2xl bg-accent-soft px-4 py-3.5 text-sm sm:px-5">
+      <div className="rounded-xl bg-accent-soft px-4 py-3.5 text-sm sm:px-5">
         <p className="font-medium text-accent">{cardio.intensity}</p>
         <p className="mt-1 text-foreground/80">{cardio.speechTest}</p>
       </div>
-      <p className="text-sm text-foreground/85">
+      <p className="text-sm text-foreground/85 text-center">
         <span className="font-medium text-foreground">Ce mois-ci : </span>
         {monthData.description}
       </p>
-      <p className="text-sm text-muted">{cardio.mobilityNote}</p>
-      <InfoCallout tone="warning">{cardio.warning}</InfoCallout>
     </div>
   );
 }

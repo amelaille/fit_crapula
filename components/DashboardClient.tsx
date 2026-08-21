@@ -9,6 +9,7 @@ import { getPhaseById, weeklyRecap, fridayWalkBonus } from "@/data/program";
 import { weeklySchedule } from "@/data/workouts";
 import type { AppUser, WeightEntry } from "@/lib/types";
 import WeightChart from "./WeightChart";
+import { MoveRight } from "lucide-react";
 
 export default function DashboardClient({ currentUser }: { currentUser: AppUser }) {
   const isAmelie = currentUser === "amelie";
@@ -62,14 +63,11 @@ export default function DashboardClient({ currentUser }: { currentUser: AppUser 
       : null;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       {isAmelie && (
         <>
           {/* Semaine en cours */}
-          <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
-            <p className="text-xs font-semibold uppercase tracking-wide text-accent">
-              Semaine en cours
-            </p>
+          <section className="rounded-2xl border border-border bg-surface p-5 shadow-sm sm:p-7 text-center">
             <h2 className="mt-0.5 text-xl font-semibold text-foreground">
               Semaine {week.id} - {phase.name}
             </h2>
@@ -92,12 +90,13 @@ export default function DashboardClient({ currentUser }: { currentUser: AppUser 
               href={`/semaine/${week.id}`}
               className="mt-4 inline-flex items-center gap-1 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground"
             >
-              Voir le détail de la semaine →
+              Voir le détail de la semaine
+              <MoveRight className="h-4 w-4" />
             </Link>
           </section>
 
           {/* Rappel du jour */}
-          <section className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
+          <section className="rounded-2xl border border-border bg-surface p-5 shadow-sm sm:p-7">
             <p className="text-xs font-semibold uppercase tracking-wide text-accent">
               Rappel du jour ({todayName})
             </p>

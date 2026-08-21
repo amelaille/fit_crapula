@@ -1,6 +1,7 @@
 import type { Exercise } from "@/lib/types";
 import EditableLoad from "./EditableLoad";
 import ReadOnlyLoad from "./ReadOnlyLoad";
+import { Sparkles } from "lucide-react";
 
 type ExerciseCardProps = {
   exercise: Exercise;
@@ -11,10 +12,10 @@ type ExerciseCardProps = {
 
 export default function ExerciseCard({ exercise, weekId, fallback, readOnly }: ExerciseCardProps) {
   return (
-    <div className="rounded-2xl border border-border bg-background/60 p-4 sm:p-5">
-      <div className="flex flex-wrap items-start justify-between gap-2">
+    <div className="rounded-lg border border-border bg-background/60 p-4">
+      <div className="flex flex-col items-center gap-1 mb-4">
         <h3 className="font-semibold text-foreground">{exercise.name}</h3>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {exercise.rir && (
             <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
               {exercise.rir}
@@ -27,16 +28,21 @@ export default function ExerciseCard({ exercise, weekId, fallback, readOnly }: E
           )}
         </div>
       </div>
-
-      <p className="mt-1.5 text-sm text-muted">
-        {exercise.sets} × {exercise.reps} · repos {exercise.rest}
-      </p>
+      <div className="flex flex-row justify-center mt-1.5 text-sm text-muted gap-3">
+        <p className="">
+          {exercise.sets} × {exercise.reps}
+        </p>
+        <Sparkles className="h-4 w-4 text-accent" />
+        <p className="">
+          Repos {exercise.rest}
+        </p>
+      </div>
 
       {exercise.note && (
-        <p className="mt-2 text-sm italic text-foreground/75">{exercise.note}</p>
+        <p className="mt-2 text-sm text-foreground/75">{exercise.note}</p>
       )}
 
-      <div className="mt-3.5 border-t border-border pt-3.5">
+      <div className="mt-2 border-t border-border pt-4">
         {readOnly ? (
           <ReadOnlyLoad exerciseId={exercise.id} weekId={weekId} />
         ) : (

@@ -197,7 +197,7 @@ export const tooEasySignals = [
 // ---------- 3.8 Cardio ----------
 
 export const cardio = {
-  intensity: "RPE 5-6/10 — allure conversationnelle.",
+  intensity: "RPE 5-6/10 : allure conversationnelle.",
   speechTest:
     "Test de la parole : tu dois pouvoir dire une phrase complète sans t'arrêter pour respirer. Si tu ne peux dire que 3 mots, ralentis. Si tu peux chanter, accélère.",
   months: [
@@ -206,7 +206,7 @@ export const cardio = {
     { month: 3, description: "40 min, ou 5-7 km selon ta forme" },
   ],
   warning:
-    "Important : pas plus de cardio que ça. Trop de cardio en déficit brûle du muscle fessier — exactement ce que tu ne veux pas. La marche quotidienne fait le travail de fond, la musculation fait la forme.",
+    "Important : pas plus de cardio que ça. Trop de cardio en déficit brûle du muscle fessier : exactement ce que tu ne veux pas. La marche quotidienne fait le travail de fond, la musculation fait la forme.",
   mobilityNote:
     "N'oublie pas quelques minutes de mobilité (étirements, articulations) après la course.",
 };
@@ -223,7 +223,7 @@ export const phases: Phase[] = [
     id: 1,
     name: "Installation",
     weekRange: [1, 4],
-    objective: "-2,5 kg (dont ~1 kg d'eau la première semaine)",
+    objective: "-2,5 kg",
     expectedWeight: "~63,5 kg",
     caloriesTraining: 1650,
     caloriesRest: 1400,

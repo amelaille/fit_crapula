@@ -4,15 +4,14 @@ import type { WorkoutSession } from "@/lib/types";
 export const sessionA: WorkoutSession = {
   id: "A",
   day: "Lundi",
-  title: "Bas du corps A — Fessiers / Ischios (lourd)",
+  title: "Fessiers / Ischios (lourd)",
   duration: "60 min",
   intensityLabel:
-    "RIR 1-2 sur hip thrust et SDT roumain · RIR 0-1 sur leg curl et abductions. Charges lourdes, repos longs.",
+    "RIR 1-2 sur hip thrust et SDT roumain, RIR 0-1 sur leg curl et abductions. Charges lourdes, repos longs.",
   intensityFeeling:
     "Effort maximal, tu dois avoir besoin de te concentrer avant chaque série.",
   warmup:
-    "5 min vélo + 15 hip thrust au poids du corps + 15 abductions élastique.",
-  note: "C'est ta séance la plus difficile de la semaine.",
+    "5 min vélo + 15 hip thrust au poids du corps",
   exercises: [
     {
       id: "hipthrust-barre",
@@ -26,7 +25,7 @@ export const sessionA: WorkoutSession = {
     },
     {
       id: "sdt-roumain",
-      name: "Soulevé de terre roumain",
+      name: "RDL",
       sets: 4,
       reps: "10",
       rest: "90 s",
@@ -60,7 +59,7 @@ export const sessionA: WorkoutSession = {
       reps: "20",
       rest: "45 s",
       rir: "RIR 0-1",
-      note: "Moyen fessier — clé de la forme ronde vue de face.",
+      note: "Moyen fessier : clé de la forme ronde vue de face.",
     },
   ],
 };
@@ -74,13 +73,11 @@ export const sessionB: WorkoutSession = {
     "RIR 3 partout, charges plafonnées, aucune progression en poids.",
   intensityFeeling:
     "Ça chauffe, jamais de forcing. Tu dois sortir fraîche. Si tu es épuisée, tu es allée trop fort.",
-  warmup: "Juste les articulations — séance légère.",
-  note:
-    "Objectif : entretenir et tonifier, pas construire du volume. Charges modérées, tempo contrôlé, repos courts. Règle du mardi : tu ne montes jamais au-dessus de 4 kg aux élévations latérales, ni au-dessus de 8 kg par haltère au développé. Une fois ces plafonds atteints, tu restes dessus et tu ajoutes des répétitions uniquement. Pas de curl biceps ni d'extensions triceps isolées dans ce programme — le tirage et les pompes suffisent largement à garder des bras toniques sans ajouter de volume.",
+  warmup: "Juste les articulations.",
   exercises: [
     {
       id: "tirage-vertical-poulie",
-      name: "Tirage vertical poulie",
+      name: "Lat pull",
       sets: 3,
       reps: "12",
       rest: "60 s",
@@ -113,7 +110,6 @@ export const sessionB: WorkoutSession = {
       rest: "45 s",
       rir: "RIR 3",
       tempo: "2-0-2-0",
-      note: "Plafond : jamais au-dessus de 4 kg.",
     },
     {
       id: "pompes",
@@ -137,17 +133,17 @@ export const sessionB: WorkoutSession = {
 export const sessionC: WorkoutSession = {
   id: "C",
   day: "Jeudi",
-  title: "Bas du corps B — Fessiers / Quadriceps",
+  title: "Fessiers / Quadriceps",
   duration: "60 min",
   intensityLabel: "RIR 2 partout. Charges à ~85% de celles du lundi, plus de volume.",
   intensityFeeling:
-    "Dur mais répétable — tu ne dois jamais avoir l'impression de survivre.",
+    "Dur mais répétable, tu ne dois jamais avoir l'impression de survivre.",
   warmup:
     "5 min cardio (sauf si tu es venue à pied) + articulations + 10 séries à vide du premier exo.",
   exercises: [
     {
       id: "squat-barre-goblet",
-      name: "Squat barre ou goblet",
+      name: "Squat barre",
       sets: 4,
       reps: "10",
       rest: "2 min",
@@ -190,7 +186,7 @@ export const sessionC: WorkoutSession = {
       reps: "20",
       rest: "45 s",
       rir: "RIR 2",
-      note: "Pour des jambes équilibrées.",
+      note: "Pour des jambes équilibrées sans poids.",
     },
   ],
 };
@@ -217,7 +213,7 @@ export const sessionD: WorkoutSession = {
     },
     {
       id: "kickback-poulie",
-      name: "Kickback poulie",
+      name: "Kickback",
       sets: 4,
       reps: "15/jambe",
       rest: "45 s",
@@ -233,7 +229,7 @@ export const sessionD: WorkoutSession = {
     },
     {
       id: "good-morning-legere",
-      name: "Good morning barre légère",
+      name: "Good morning smith",
       sets: 3,
       reps: "15",
       rest: "60 s",
@@ -241,15 +237,15 @@ export const sessionD: WorkoutSession = {
     },
     {
       id: "abduction-elastique",
-      name: "Abduction élastique (side walk)",
+      name: "Abduction",
       sets: 3,
-      reps: "20 pas",
+      reps: "20",
       rest: "45 s",
       rir: "RIR 0-1",
     },
     {
       id: "hipthrust-finisher",
-      name: "Hip thrust — série finale au poids du corps jusqu'à l'échec",
+      name: "Hip thrust : série finale au poids du corps jusqu'à l'échec",
       sets: 1,
       reps: "max",
       rest: "—",

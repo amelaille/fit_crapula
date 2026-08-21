@@ -93,7 +93,7 @@ export default function Nav({ user }: { user: AppUser }) {
       </header>
 
       {/* Barre du bas — mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 bg-background/95 backdrop-blur sm:hidden px-6 py-2">
+      <nav className="fixed inset-x-0 bottom-0 z-30 bg-background/95 backdrop-blur sm:hidden px-6 pt-2 pb-4">
         <div className="mx-auto flex max-w-md items-stretch justify-between px-2 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1.5">
           {visibleLinks.map(({ href, icon: Icon }) => {
             const active = isActive(pathname, href);

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import { weeks, getWeekById } from "@/data/weeks";
 import { getPhaseById } from "@/data/program";
@@ -26,51 +27,53 @@ export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
   const nextWeekId = weekId < 12 ? weekId + 1 : null;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
+
+      {/* Navigation semaine precedente et suivante*/}
       <div className="flex items-center justify-between">
-        <Link
-          href={previousWeekId ? `/semaine/${previousWeekId}` : "#"}
-          aria-disabled={!previousWeekId}
-          className={`flex items-center gap-1 rounded-full border border-border px-3.5 py-2 text-sm font-medium ${
-            previousWeekId
-              ? "text-foreground hover:bg-nude/60"
-              : "pointer-events-none text-muted/40"
-          }`}
-        >
-          ← Semaine {previousWeekId ?? ""}
-        </Link>
+        {previousWeekId ? (
+          <Link
+            href={`/semaine/${previousWeekId}`}
+            className="flex items-center gap-1 px-3.5 py-2 text-sm font-medium text-nude hover:text-accent"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Semaine {previousWeekId}
+          </Link>
+        ) : (
+          <span />
+        )}
         <div className="flex gap-1.5">
           {weeks.map((w) => (
             <Link
               key={w.id}
               href={`/semaine/${w.id}`}
-              className={`hidden h-2 w-2 rounded-full sm:block ${
-                w.id === weekId ? "bg-accent" : "bg-border"
-              }`}
+              className={`hidden h-2 w-2 rounded-full sm:block ${w.id === weekId ? "bg-accent" : "bg-border"
+                }`}
               aria-label={`Semaine ${w.id}`}
             />
           ))}
         </div>
-        <Link
-          href={nextWeekId ? `/semaine/${nextWeekId}` : "#"}
-          aria-disabled={!nextWeekId}
-          className={`flex items-center gap-1 rounded-full border border-border px-3.5 py-2 text-sm font-medium ${
-            nextWeekId
-              ? "text-foreground hover:bg-nude/60"
-              : "pointer-events-none text-muted/40"
-          }`}
-        >
-          Semaine {nextWeekId ?? ""} →
-        </Link>
+        {nextWeekId ? (
+          <Link
+            href={`/semaine/${nextWeekId}`}
+            className="flex items-center gap-1 px-3.5 py-2 text-sm font-medium text-foreground text-nude hover:text-accent"
+          >
+            Semaine {nextWeekId}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        ) : (
+          <span />
+        )}
       </div>
 
-      <header className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-7">
-        <div className="flex flex-wrap items-center gap-2">
+      {/* Présentation de la semaine */}
+      <header className="rounded-2xl border border-border bg-surface p-5 shadow-sm text-center">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
             Semaine {week.id} / 12
           </span>
           <span className="rounded-full bg-nude px-3 py-1 text-xs font-medium text-nude-foreground">
-            Mois {phase.id} · {phase.name}
+            Mois {phase.id} - {phase.name}
           </span>
           {week.isDeload && (
             <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent">
@@ -79,16 +82,16 @@ export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
           )}
           {week.isPhotoWeek && (
             <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent">
-              📸 Photos & mensurations
+              📸 Photos et mensurations
             </span>
           )}
         </div>
 
-        <h1 className="mt-3 text-2xl font-semibold text-foreground sm:text-3xl">
+        <h1 className="mt-3 text-xl font-semibold text-foreground sm:text-3xl text-center">
           {week.focus}
         </h1>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4 text-center">
           <Stat label="Calories training" value={`${week.caloriesTraining} kcal`} />
           <Stat label="Calories repos" value={`${week.caloriesRest} kcal`} />
           <Stat label="Marche/jour" value={`${week.walkMinutes} min`} />
@@ -107,17 +110,21 @@ export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
         )}
 
         {week.trainingAdjustments && week.trainingAdjustments.length > 0 && (
-          <div className="mt-4 rounded-2xl bg-nude/60 px-4 py-3 text-sm">
-            <p className="font-medium text-foreground">Ajustements de la séance ce mois-ci</p>
+          <div className="mt-4 rounded-2xl py-3 text-sm">
+            <p className="font-medium text-accent underline">Ajustements des séances</p>
             <ul className="mt-1.5 flex flex-col gap-1 text-foreground/80">
               {week.trainingAdjustments.map((adj) => (
-                <li key={adj}>— {adj}</li>
+                <li key={adj} className="flex justify-center gap-2">
+                  <span className="text-accent">•</span>
+                  {adj}
+                </li>
               ))}
             </ul>
           </div>
         )}
       </header>
 
+      {/* Séances de la semaine */}
       <WeekSessions weekId={week.id} phaseId={phase.id} />
     </div>
   );
@@ -125,11 +132,11 @@ export default async function WeekPage(props: PageProps<"/semaine/[id]">) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl bg-background/70 px-3.5 py-3">
+    <div className="border border-border/40 bg-background/70 px-3 py-3">
       <p className="text-[0.68rem] font-medium uppercase tracking-wide text-muted">
         {label}
       </p>
-      <p className="mt-0.5 text-base font-semibold text-foreground">{value}</p>
+      <p className="mt-0.5 text-sm font-semibold text-foreground">{value}</p>
     </div>
   );
 }

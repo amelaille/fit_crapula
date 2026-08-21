@@ -12,7 +12,7 @@ type SessionBodyProps = {
 export default function SessionBody({ session, weekId, fallback, readOnly }: SessionBodyProps) {
   return (
     <>
-      <div className="rounded-2xl bg-accent-soft px-4 py-3.5 text-sm sm:px-5">
+      <div className="rounded-xl bg-accent-soft px-4 py-3.5 text-sm">
         <p className="font-medium text-accent">{session.intensityLabel}</p>
         <p className="mt-1 text-foreground/80">{session.intensityFeeling}</p>
       </div>
@@ -22,10 +22,6 @@ export default function SessionBody({ session, weekId, fallback, readOnly }: Ses
           <span className="font-medium text-foreground/80">Échauffement : </span>
           {session.warmup}
         </p>
-      )}
-
-      {session.note && (
-        <p className="mt-3 text-sm leading-relaxed text-foreground/75">{session.note}</p>
       )}
 
       <div className="mt-4 flex flex-col gap-3">
@@ -45,10 +41,10 @@ export default function SessionBody({ session, weekId, fallback, readOnly }: Ses
           {session.extra.map((block) => (
             <div
               key={block.label}
-              className="rounded-2xl border border-dashed border-border px-4 py-3 text-sm"
+              className="rounded-lg border border-border bg-background/60 px-4 py-3 text-sm flex flex-col gap-1 text-center"
             >
-              <span className="font-semibold text-foreground">{block.label} — </span>
-              <span className="text-foreground/80">{block.detail}</span>
+              <h3 className="text-base font-semibold text-foreground">{block.label}</h3>
+              <span className="text-muted">{block.detail}</span>
             </div>
           ))}
         </div>

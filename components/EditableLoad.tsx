@@ -61,7 +61,7 @@ export default function EditableLoad({ exerciseId, weekId, fallback }: EditableL
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div className="flex flex-wrap justify-center text-center items-center gap-2 sm:gap-3">
       <label className="flex flex-col gap-1">
         <span className="text-[0.68rem] font-medium uppercase tracking-wide text-muted">
           Charge (kg)
