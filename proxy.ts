@@ -32,7 +32,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  return response;
+  // Passe l'identité déjà vérifiée aux Server Components via un header de requête,
+  // pour leur éviter un 2e appel réseau à Supabase Auth (getCurrentUser côté layout/page).
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-user-email", user?.email ?? "");
+  const finalResponse = NextResponse.next({ request: { headers: requestHeaders } });
+  response.cookies.getAll().forEach((cookie) => finalResponse.cookies.set(cookie));
+
+  return finalResponse;
 }
 
 export const config = {

@@ -48,15 +48,19 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
     const value = Number(weightInput.replace(",", "."));
     if (Number.isNaN(value) || value <= 0) return;
     const weekId = getCurrentWeekId();
-    await addWeight({
-      user: currentUser,
-      weekId,
-      weight: value,
-      date: new Date().toISOString(),
-    });
-    setWeightInput("");
-    await refreshAll();
-    showFlash(`Pesée enregistrée pour la semaine ${weekId}.`);
+    try {
+      await addWeight({
+        user: currentUser,
+        weekId,
+        weight: value,
+        date: new Date().toISOString(),
+      });
+      setWeightInput("");
+      await refreshAll();
+      showFlash(`Pesée enregistrée pour la semaine ${weekId}.`);
+    } catch (err) {
+      showFlash(`Erreur : ${err instanceof Error ? err.message : String(err)}`);
+    }
   }
 
   async function handleSaveComment() {
