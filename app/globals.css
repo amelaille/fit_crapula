@@ -12,6 +12,7 @@
   --nude: #59382c;
   --nude-foreground: #ffecda;
   --success: #0ca30c;
+  --success-soft: #dbf1db;
 
   --chart-actual: #c56f8c;
   --chart-target: #9c8880;
@@ -36,6 +37,7 @@
   --color-nude: var(--nude);
   --color-nude-foreground: var(--nude-foreground);
   --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

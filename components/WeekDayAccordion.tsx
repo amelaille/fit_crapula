@@ -33,7 +33,7 @@ export default function WeekDayAccordion({ id, day, title, done, children }: Wee
         </div>
         <div className="flex items-center gap-2">
           {done && !open && (
-            <span className="flex items-center gap-1 rounded-full bg-success/15 px-2.5 py-1 text-xs font-semibold text-success">
+            <span className="flex items-center gap-1 rounded-full bg-success-soft px-2.5 py-1 text-xs font-semibold text-success">
               <Check className="h-4 w-4" />
             </span>
           )}
