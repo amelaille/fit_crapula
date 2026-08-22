@@ -35,11 +35,7 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
       (c) => c.weekId === selectedWeek && c.user === currentUser
     );
     setCommentInput(existingComment?.text ?? "");
-    const existingWeight = weights.find(
-      (w) => w.weekId === selectedWeek && w.user === currentUser
-    );
-    setWeightInput(existingWeight != null ? String(existingWeight.weight) : "");
-  }, [selectedWeek, weights, comments, currentUser]);
+  }, [selectedWeek, comments, currentUser]);
 
   function showFlash(text: string) {
     setFlash(text);
@@ -51,14 +47,16 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
     e.preventDefault();
     const value = Number(weightInput.replace(",", "."));
     if (Number.isNaN(value) || value <= 0) return;
+    const weekId = getCurrentWeekId();
     await addWeight({
       user: currentUser,
-      weekId: selectedWeek,
+      weekId,
       weight: value,
       date: new Date().toISOString(),
     });
+    setWeightInput("");
     await refreshAll();
-    showFlash(`Poids enregistré pour la semaine ${selectedWeek}.`);
+    showFlash(`Pesée enregistrée pour la semaine ${weekId}.`);
   }
 
   async function handleSaveComment() {
@@ -69,8 +67,12 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
 
   const sortedComments = [...comments].sort((a, b) => b.weekId - a.weekId);
   const myWeights = weights.filter((w) => w.user === currentUser);
-  const myLastWeight = [...myWeights].sort((a, b) => b.weekId - a.weekId)[0];
-  const myFirstWeight = [...myWeights].sort((a, b) => a.weekId - b.weekId)[0];
+  const myLastWeight = [...myWeights].sort(
+    (a, b) => b.weekId - a.weekId || b.date.localeCompare(a.date)
+  )[0];
+  const myFirstWeight = [...myWeights].sort(
+    (a, b) => a.weekId - b.weekId || a.date.localeCompare(b.date)
+  )[0];
   const variation =
     myLastWeight && myFirstWeight && myLastWeight.weekId !== myFirstWeight.weekId
       ? Math.round((myLastWeight.weight - myFirstWeight.weight) * 10) / 10
@@ -102,10 +104,9 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
           onSubmit={handleAddWeight}
           className="flex flex-wrap items-end gap-3 rounded-2xl border border-border bg-surface p-4 sm:p-5"
         >
-          <WeekSelector value={selectedWeek} onChange={setSelectedWeek} />
           <label className="flex flex-col gap-1">
             <span className="text-[0.68rem] font-medium uppercase tracking-wide text-muted">
-              Poids (kg) — moyenne de la semaine, {APP_USER_LABELS[currentUser]}
+              Pesée du jour (kg) — semaine {getCurrentWeekId()}, {APP_USER_LABELS[currentUser]}
             </span>
             <input
               type="text"
@@ -129,10 +130,11 @@ export default function SuiviClient({ currentUser }: { currentUser: AppUser }) {
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-semibold text-foreground">Journal de bord</h2>
         <div className="rounded-2xl border border-border bg-surface p-4 sm:p-5">
-          <div className="mb-2 flex items-center justify-between gap-3">
+          <div className="mb-2 flex flex-wrap items-end justify-between gap-3">
             <p className="text-sm font-medium text-foreground/80">
               Commentaire — semaine {selectedWeek}, {APP_USER_LABELS[currentUser]}
             </p>
+            <WeekSelector value={selectedWeek} onChange={setSelectedWeek} label="Semaine du commentaire" />
           </div>
           <textarea
             value={commentInput}

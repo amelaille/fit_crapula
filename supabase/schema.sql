@@ -35,13 +35,13 @@ create table exercise_loads (
   primary key (exercise_id, week_id)
 );
 
--- ---------- Pesées hebdomadaires, une courbe par personne ----------
+-- ---------- Pesées, une courbe par personne (plusieurs pesées par semaine possibles — la courbe en fait la moyenne) ----------
 create table weight_entries (
+  id bigint generated always as identity primary key,
   app_user text not null check (app_user in ('amelie', 'sena')),
   week_id integer not null,
   weight numeric not null,
-  entry_date timestamptz not null default now(),
-  primary key (app_user, week_id)
+  entry_date timestamptz not null default now()
 );
 
 -- ---------- Commentaires hebdomadaires, un journal par personne ----------

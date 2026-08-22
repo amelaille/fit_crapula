@@ -22,8 +22,8 @@ export default function DashboardClient({ currentUser }: { currentUser: AppUser 
   const [cheatMeal, setCheatMeal] = useState(false);
 
   useEffect(() => {
-    getWeights().then((all) => setWeights(all.filter((w) => w.user === currentUser)));
-  }, [currentUser]);
+    getWeights().then(setWeights);
+  }, []);
 
   useEffect(() => {
     if (!isAmelie) return;
@@ -54,7 +54,10 @@ export default function DashboardClient({ currentUser }: { currentUser: AppUser 
     recap.caloriesType === "training" ? week.caloriesTraining : week.caloriesRest;
   const todayWalk = week.walkMinutes + (recap.walkType === "friday" ? fridayWalkBonus : 0);
 
-  const sortedWeights = [...weights].sort((a, b) => a.weekId - b.weekId);
+  const myWeights = weights.filter((w) => w.user === currentUser);
+  const sortedWeights = [...myWeights].sort(
+    (a, b) => a.weekId - b.weekId || a.date.localeCompare(b.date)
+  );
   const firstWeight = sortedWeights[0];
   const lastWeight = sortedWeights[sortedWeights.length - 1];
   const variation =

@@ -119,8 +119,9 @@ export async function getWeights(): Promise<WeightEntry[]> {
   }));
 }
 
+/** Ajoute une nouvelle pesée (plusieurs par semaine possibles — la courbe en fait la moyenne). */
 export async function addWeight(entry: WeightEntry): Promise<void> {
-  const { error } = await supabase.from("weight_entries").upsert({
+  const { error } = await supabase.from("weight_entries").insert({
     app_user: entry.user,
     week_id: entry.weekId,
     weight: entry.weight,

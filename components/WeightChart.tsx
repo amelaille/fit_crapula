@@ -13,30 +13,34 @@ import {
 import type { AppUser, WeightEntry } from "@/lib/types";
 import { APP_USERS, APP_USER_LABELS } from "@/lib/types";
 
-const START_WEIGHT = 72;
-const TARGET_WEIGHT = 65.5;
+/** Poids de départ (avant la semaine 1), connu pour Amélie uniquement. */
+const BASELINE_WEIGHT: Partial<Record<AppUser, number>> = {
+  amelie: 68,
+};
 
-type ChartPoint = {
-  week: number;
-  target: number;
-} & Record<AppUser, number | null>;
+type ChartPoint = { week: number } & Record<AppUser, number | null>;
+
+function average(values: number[]): number {
+  const sum = values.reduce((total, v) => total + v, 0);
+  return Math.round((sum / values.length) * 10) / 10;
+}
 
 function buildData(entries: WeightEntry[]): ChartPoint[] {
-  const byUserWeek = new Map<AppUser, Map<number, number>>();
+  const byUserWeek = new Map<AppUser, Map<number, number[]>>();
   for (const user of APP_USERS) byUserWeek.set(user, new Map());
   for (const entry of entries) {
-    byUserWeek.get(entry.user)?.set(entry.weekId, entry.weight);
+    const weekMap = byUserWeek.get(entry.user);
+    const existing = weekMap?.get(entry.weekId);
+    if (existing) existing.push(entry.weight);
+    else weekMap?.set(entry.weekId, [entry.weight]);
   }
 
   const points: ChartPoint[] = [];
   for (let week = 0; week <= 12; week++) {
-    const target = START_WEIGHT - ((START_WEIGHT - TARGET_WEIGHT) / 12) * week;
-    const point = {
-      week,
-      target: Math.round(target * 10) / 10,
-    } as ChartPoint;
+    const point = { week } as ChartPoint;
     for (const user of APP_USERS) {
-      point[user] = byUserWeek.get(user)?.get(week) ?? null;
+      const weekValues = byUserWeek.get(user)?.get(week);
+      point[user] = weekValues ? average(weekValues) : (week === 0 ? BASELINE_WEIGHT[user] ?? null : null);
     }
     points.push(point);
   }
@@ -76,25 +80,11 @@ export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
               fontSize: 13,
             }}
             labelFormatter={(week) => (week === 0 ? "Départ" : `Semaine ${week}`)}
-            formatter={(value, name) => [
-              `${value} kg`,
-              name === "target" ? "Objectif" : APP_USER_LABELS[name as AppUser],
-            ]}
+            formatter={(value, name) => [`${value} kg`, APP_USER_LABELS[name as AppUser]]}
           />
           <Legend
-            formatter={(value) =>
-              value === "target" ? "Objectif" : APP_USER_LABELS[value as AppUser]
-            }
+            formatter={(value) => APP_USER_LABELS[value as AppUser]}
             wrapperStyle={{ fontSize: 13, color: "var(--muted)" }}
-          />
-          <Line
-            type="monotone"
-            dataKey="target"
-            stroke="var(--chart-target)"
-            strokeWidth={2}
-            strokeDasharray="6 5"
-            dot={false}
-            isAnimationActive={false}
           />
           {usersToShow.map((user) => (
             <Line
