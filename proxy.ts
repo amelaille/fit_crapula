@@ -24,9 +24,14 @@ export async function proxy(request: NextRequest) {
   );
 
   // IMPORTANT : ne pas retirer cet appel, il rafraîchit le token Supabase.
+  // getSession() lit le cookie localement (pas d'appel réseau à Supabase à chaque navigation),
+  // contrairement à getUser() qui revalide en permanence côté serveur. Compromis assumé pour
+  // une appli privée à 2 comptes : un cookie volé/révoqué pourrait en théorie être rejoué le
+  // temps qu'il expire, mais le gain de vitesse sur chaque clic le justifie ici.
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   if (!user && request.nextUrl.pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", request.url));
